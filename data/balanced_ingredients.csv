@@ -1,0 +1,525 @@
+ingredient,int_label
+cornflour,0
+Cornflour,0
+corn flour,0
+Corn Flour,0
+wheat flour,0
+wheatflour,0
+Wheat Flour,0
+all purpose flour,0
+allpurposeflour,0
+All Purpose Flour,0
+bread flour,0
+breadflour,0
+Bread Flour,0
+rice flour,0
+riceflour,0
+Rice Flour,0
+salt,0
+Salt,0
+sea salt,0
+seasalt,0
+Sea Salt,0
+onion,0
+Onion,0
+onions,0
+Onions,0
+garlic,0
+Garlic,0
+tomato,0
+Tomato,0
+tomatoes,0
+Tomatoes,0
+carrot,0
+Carrot,0
+carrots,0
+Carrots,0
+potato,0
+Potato,0
+potatoes,0
+Potatoes,0
+spinach,0
+Spinach,0
+lettuce,0
+Lettuce,0
+cabbage,0
+Cabbage,0
+broccoli,0
+Broccoli,0
+cauliflower,0
+Cauliflower,0
+cucumber,0
+Cucumber,0
+bell pepper,0
+bellpepper,0
+Bell Pepper,0
+mushroom,0
+Mushroom,0
+apple,0
+Apple,0
+banana,0
+Banana,0
+orange,0
+Orange,0
+lemon,0
+Lemon,0
+lime,0
+Lime,0
+grape,0
+Grape,0
+strawberry,0
+Strawberry,0
+blueberry,0
+Blueberry,0
+mango,0
+Mango,0
+pineapple,0
+Pineapple,0
+sugar,0
+Sugar,0
+brown sugar,0
+brownsugar,0
+Brown Sugar,0
+cane sugar,0
+canesugar,0
+Cane Sugar,0
+water,0
+Water,0
+filtered water,0
+filteredwater,0
+Filtered Water,0
+oil,0
+Oil,0
+vegetable oil,0
+vegetableoil,0
+Vegetable Oil,0
+olive oil,0
+oliveoil,0
+Olive Oil,0
+coconut oil,0
+coconutoil,0
+Coconut Oil,0
+canola oil,0
+canolaoil,0
+Canola Oil,0
+sunflower oil,0
+sunfloweroil,0
+Sunflower Oil,0
+butter,0
+Butter,0
+ghee,0
+Ghee,0
+milk,0
+Milk,0
+whole milk,0
+wholemilk,0
+Whole Milk,0
+skim milk,0
+skimmilk,0
+Skim Milk,0
+cream,0
+Cream,0
+yogurt,0
+Yogurt,0
+cheese,0
+Cheese,0
+cheddar cheese,0
+cheddarcheese,0
+Cheddar Cheese,0
+mozzarella cheese,0
+mozzarellacheese,0
+Mozzarella Cheese,0
+parmesan cheese,0
+parmesancheese,0
+Parmesan Cheese,0
+egg,0
+Egg,0
+eggs,0
+Eggs,0
+whole eggs,0
+wholeeggs,0
+Whole Eggs,0
+egg white,0
+eggwhite,0
+Egg White,0
+egg yolk,0
+eggyolk,0
+Egg Yolk,0
+chicken,0
+Chicken,0
+beef,0
+Beef,0
+pork,0
+Pork,0
+fish,0
+Fish,0
+salmon,0
+Salmon,0
+tuna,0
+Tuna,0
+shrimp,0
+Shrimp,0
+tofu,0
+Tofu,0
+lentils,0
+Lentils,0
+beans,0
+Beans,0
+chickpeas,0
+Chickpeas,0
+kidney beans,0
+kidneybeans,0
+Kidney Beans,0
+black pepper,0
+blackpepper,0
+Black Pepper,0
+white pepper,0
+whitepepper,0
+White Pepper,0
+turmeric,0
+Turmeric,0
+cumin,0
+Cumin,0
+coriander,0
+Coriander,0
+cinnamon,0
+Cinnamon,0
+nutmeg,0
+Nutmeg,0
+ginger,0
+Ginger,0
+basil,0
+Basil,0
+oregano,0
+Oregano,0
+thyme,0
+Thyme,0
+rosemary,0
+Rosemary,0
+parsley,0
+Parsley,0
+cilantro,0
+Cilantro,0
+mint,0
+Mint,0
+dill,0
+Dill,0
+vanilla,0
+Vanilla,0
+vanilla extract,0
+vanillaextract,0
+Vanilla Extract,0
+honey,0
+Honey,0
+maple syrup,0
+maplesyrup,0
+Maple Syrup,0
+agave syrup,0
+agavesyrup,0
+Agave Syrup,0
+molasses,0
+Molasses,0
+baking powder,0
+bakingpowder,0
+Baking Powder,0
+baking soda,0
+bakingsoda,0
+Baking Soda,0
+sodium bicarbonate,0
+sodiumbicarbonate,0
+Sodium Bicarbonate,0
+yeast,0
+Yeast,0
+vinegar,0
+Vinegar,0
+white vinegar,0
+whitevinegar,0
+White Vinegar,0
+apple cider vinegar,0
+applecidervinegar,0
+Apple Cider Vinegar,0
+balsamic vinegar,0
+balsamicvinegar,0
+Balsamic Vinegar,0
+mustard,0
+Mustard,0
+ketchup,0
+Ketchup,0
+mayonnaise,0
+Mayonnaise,0
+soy sauce,0
+soysauce,0
+Soy Sauce,0
+rice,0
+Rice,0
+white rice,0
+whiterice,0
+White Rice,0
+brown rice,0
+brownrice,0
+Brown Rice,0
+oats,0
+Oats,0
+oatmeal,0
+Oatmeal,0
+quinoa,0
+Quinoa,0
+barley,0
+Barley,0
+corn,0
+Corn,0
+pasta,0
+Pasta,0
+noodles,0
+Noodles,0
+bread,0
+Bread,0
+whole wheat bread,0
+wholewheatbread,0
+Whole Wheat Bread,0
+almond,0
+Almond,0
+walnut,0
+Walnut,0
+peanut,0
+Peanut,0
+cashew,0
+Cashew,0
+sunflower seed,0
+sunflowerseed,0
+Sunflower Seed,0
+pumpkin seed,0
+pumpkinseed,0
+Pumpkin Seed,0
+chia seed,0
+chiaseed,0
+Chia Seed,0
+flaxseed,0
+Flaxseed,0
+sesame seed,0
+sesameseed,0
+Sesame Seed,0
+tea,0
+Tea,0
+green tea,0
+greentea,0
+Green Tea,0
+black tea,0
+blacktea,0
+Black Tea,0
+coffee,0
+Coffee,0
+juice,0
+Juice,0
+apple juice,0
+applejuice,0
+Apple Juice,0
+orange juice,0
+orangejuice,0
+Orange Juice,0
+gelatin,0
+Gelatin,0
+pectin,0
+Pectin,0
+breadcrumbs,0
+Breadcrumbs,0
+stock,0
+Stock,0
+broth,0
+Broth,0
+bouillon,0
+Bouillon,0
+high fructose corn syrup,1
+highfructosecornsyrup,1
+High Fructose Corn Syrup,1
+corn syrup,1
+cornsyrup,1
+Corn Syrup,1
+palm oil,1
+palmoil,1
+Palm Oil,1
+carrageenan,1
+Carrageenan,1
+soy lecithin,1
+soylecithin,1
+Soy Lecithin,1
+xanthan gum,1
+xanthangum,1
+Xanthan Gum,1
+monosodium glutamate,1
+monosodiumglutamate,1
+Monosodium Glutamate,1
+msg,1
+Msg,1
+sulfites,1
+Sulfites,1
+guar gum,1
+guargum,1
+Guar Gum,1
+cellulose gum,1
+cellulosegum,1
+Cellulose Gum,1
+maltodextrin,1
+Maltodextrin,1
+dextrose,1
+Dextrose,1
+invert sugar,1
+invertsugar,1
+Invert Sugar,1
+corn syrup solids,1
+cornsyrupsolids,1
+Corn Syrup Solids,1
+modified food starch,1
+modifiedfoodstarch,1
+Modified Food Starch,1
+hydrogenated oil,1
+hydrogenatedoil,1
+Hydrogenated Oil,1
+propylene glycol,1
+propyleneglycol,1
+Propylene Glycol,1
+sorbic acid,1
+sorbicacid,1
+Sorbic Acid,1
+benzoic acid,1
+benzoicacid,1
+Benzoic Acid,1
+artificial flavor,1
+artificialflavor,1
+Artificial Flavor,1
+artificial flavours,1
+artificialflavours,1
+Artificial Flavours,1
+natural flavor,1
+naturalflavor,1
+Natural Flavor,1
+natural flavours,1
+naturalflavours,1
+Natural Flavours,1
+food color,1
+foodcolor,1
+Food Color,1
+food colour,1
+foodcolour,1
+Food Colour,1
+natural color,1
+naturalcolor,1
+Natural Color,1
+natural colour,1
+naturalcolour,1
+Natural Colour,1
+chocolate,1
+Chocolate,1
+dark chocolate,1
+darkchocolate,1
+Dark Chocolate,1
+milk chocolate,1
+milkchocolate,1
+Milk Chocolate,1
+white chocolate,1
+whitechocolate,1
+White Chocolate,1
+trans fat,2
+transfat,2
+Trans Fat,2
+partially hydrogenated oil,2
+partiallyhydrogenatedoil,2
+Partially Hydrogenated Oil,2
+aspartame,2
+Aspartame,2
+saccharin,2
+Saccharin,2
+sodium benzoate,2
+sodiumbenzoate,2
+Sodium Benzoate,2
+bha,2
+Bha,2
+bht,2
+Bht,2
+potassium bromate,2
+potassiumbromate,2
+Potassium Bromate,2
+azodicarbonamide,2
+Azodicarbonamide,2
+olestra,2
+Olestra,2
+sodium nitrite,2
+sodiumnitrite,2
+Sodium Nitrite,2
+sodium nitrate,2
+sodiumnitrate,2
+Sodium Nitrate,2
+potassium sorbate,2
+potassiumsorbate,2
+Potassium Sorbate,2
+sodium bisulfite,2
+sodiumbisulfite,2
+Sodium Bisulfite,2
+butylated hydroxyanisole,2
+butylatedhydroxyanisole,2
+Butylated Hydroxyanisole,2
+butylated hydroxytoluene,2
+butylatedhydroxytoluene,2
+Butylated Hydroxytoluene,2
+propyl gallate,2
+propylgallate,2
+Propyl Gallate,2
+tertiary butylhydroquinone,2
+tertiarybutylhydroquinone,2
+Tertiary Butylhydroquinone,2
+artificial colors,2
+artificialcolors,2
+Artificial Colors,2
+red 40,2
+red40,2
+Red 40,2
+yellow 5,2
+yellow5,2
+Yellow 5,2
+yellow 6,2
+yellow6,2
+Yellow 6,2
+blue 1,2
+blue1,2
+Blue 1,2
+blue 2,2
+blue2,2
+Blue 2,2
+artificial sweetener,2
+artificialsweetener,2
+Artificial Sweetener,2
+synthetic flavor,2
+syntheticflavor,2
+Synthetic Flavor,2
+processed oil,2
+processedoil,2
+Processed Oil,2
+whole water,0
+dried water,0
+natural sugar,0
+raw salt,0
+pure flour,0
+organic water,0
+natural salt,0
+pure milk,0
+dried flour,0
+pure salt,0
+fresh oil,0
+natural eggs,0
+pure sugar,0
+natural oil,0
+organic sugar,0
+organic milk,0
+pure oil,0
+raw flour,0
+whole flour,0
+whole sugar,0
+pure eggs,0
+fresh salt,0
+fresh flour,0
+dried oil,0
+dried eggs,0
+raw water,0
+raw eggs,0
+dried sugar,0
+organic eggs,0

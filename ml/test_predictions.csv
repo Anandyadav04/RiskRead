@@ -1,0 +1,519 @@
+ingredient,true_label,predicted_label
+grape juice,2,2
+soybean meal,2,0
+xylitol,2,2
+mango juice concentrate,2,2
+chewing gum base,0,2
+quillaia extract,0,0
+"oil, vegetable, corn, palm",0,0
+"noodles, baked, salted",2,2
+yeast cell wall extract,0,0
+pear juice concentrate,2,2
+instant coffee,2,0
+apple solids,2,0
+"shortening, vegetable, palm oil",0,1
+"sour cream, dried",2,2
+pomegranate,2,2
+cochineal extract (or color),0,0
+sodium,0,0
+brewed guayusa tea,2,2
+vegetable protein,2,0
+"margarine, composite, modified palm oil, soybean oil, with added vitamin d, salted",0,0
+"oil, cottonseed, hydrogenated",1,1
+crayfish,2,2
+"beef, cooked, dried",0,2
+almond extract,0,2
+"pepperoni, beef and pork",1,1
+rolled oat,2,2
+"chicken stock, dried",2,2
+"wasabi, dried",2,2
+mango pulp,2,2
+oat,2,0
+"pasta, enriched, cooked in oil",2,2
+"amaranth, puffed",2,2
+celery leaf,2,0
+whey protein,2,0
+polysorbate 60,0,0
+wheat flour,2,2
+blackberry puree,2,2
+"apple, dried",2,2
+spirulina concentrate,2,2
+"spelt, sprouted",2,2
+"margarine, composite, palm oil, partially hydrogenated palm oil, soybean oil, sweetened",1,1
+"wheat flour, enriched (not as per fda standards)",0,0
+fish stock,2,2
+"lemon juice, dried",2,2
+"pork, bacon, cooked",0,1
+pumpkin seed protein,2,2
+lime juice from concentrate,2,2
+"oil, vegetable, hydrogenated coconut, hydrogenated palm kernel",1,1
+"pork, bacon fat",0,0
+quince puree,2,2
+sugar,0,1
+"beef, roasted",0,2
+"apple, dried (with added sulfite agent)",0,0
+monterey jack cheese with hot pepper,2,2
+"multi-grain pasta, enriched (not as per fda standards)",0,0
+"shortening, vegetable, palm oil, sal oil, shea nut oil",1,0
+sodium diacetate,0,0
+hydrolyzed milk protein,0,0
+"oil, vegetable, interesterified sunflower, palm",0,1
+whey concentrate,2,0
+"cheese, enzyme-modified",0,0
+"chicken meat, skinless",2,0
+pepper,2,2
+sunflower kernel,2,0
+baobab pulp,2,2
+"shortening, vegetable, interesterified soybean oil",0,1
+"lard, hydrogenated",1,1
+fenugreek,2,2
+lutein,2,2
+"oil, palm, hydrogenated, modified",1,1
+"sweetcorn, grilled",2,2
+rice noodles,2,2
+acai berry,2,2
+ammonium phosphate,1,0
+mandarin orange juice concentrate,2,2
+lobster stock,2,2
+"paprika, smoked",2,0
+"margarine, palm oil, salted",0,0
+potassium bisulfite,0,2
+leek,2,2
+"parsley, dried",2,2
+"wheat germ, defatted",2,2
+boysenberry juice,2,2
+turkey breast meat,2,2
+rose hip,2,2
+sweet pepper oleoresin,0,0
+"blue cheese, grated",2,2
+grape seed,2,2
+"shortening, vegetable, hydrogenated fractionated palm oil, hydrogenated palm oil, hydrogenated palm kernel oil, hydrogenated soybean oil",1,1
+raisin,2,2
+white pepper,2,0
+"egg white, frozen",2,2
+magnesium lactate,2,2
+"shellac, purified",0,2
+"margarine, composite, hydrogenated and partially hydrogenated soybean oil, salted",1,1
+hot pepper juice solids,0,2
+agar,2,2
+"oil, hydrogenatd soybean, partially hydrogenated soybean",1,1
+"ramsons, dried",2,2
+coffee pulp,2,2
+glyceryl-lacto esters of fatty acids,2,0
+whey solids,0,0
+cinnamaldehyde,0,2
+romaine lettuce,2,2
+mustard flower,2,0
+whey,2,0
+napa cabbage,2,2
+"oil, coconut, fractionated",2,0
+ammonium bicarbonate,1,0
+"shortening, vegetable, fractionated palm oil, fractionated palm kernel, fractionated palm oil, palm oil, palm kernel",1,1
+chokeberry juice,2,2
+"oil, lemon",0,0
+"shortening, vegetable, palm oil, partially hydrogenated cottonseed oil, partially hydrogenated soybean oil, soybean oil",1,1
+buffalo meat,0,2
+"hot pepper, dried (with added sulfite agent)",0,0
+"great northern bean, cooked",2,2
+cellulose,2,2
+"oil, coconut, partially hydrogenated",1,1
+anhydrous milk fat,0,0
+rice flour,2,2
+cinnamon,2,0
+"wheat flour, with added ascorbic acid and enzymes, enriched",2,2
+high maltose corn syrup solids,0,1
+color,0,0
+oatmeal,2,2
+"noodles, enriched",2,2
+maltitol,0,2
+grapefruit pulp,1,2
+textured vegetable protein,0,0
+farro flour,2,2
+"chicken breast meat, broiled",2,2
+"oil, vegetable, modified",0,0
+plum extract,2,2
+azodicarbonamide,1,2
+citric acid,2,0
+sorghum flour,2,2
+"ginger, dried",2,2
+"cheddar cheese, reduced fat, grated, with added vitamin a",2,2
+"parmesan cheese, dried",2,2
+"pitaya, dried",2,2
+hydrolyzed collagen,2,0
+"ricotta cheese, low fat",2,2
+"shortening, vegetable, fractionated palm oil, palm oil",0,1
+paprika oleoresin,0,0
+"beef stock, dried",0,0
+dulse,2,2
+pork shoulder,0,1
+gooseberry,2,2
+monosodium glutamate,0,2
+"buttermilk, cultured, nonfat",2,2
+multi-grain pasta,2,2
+"cheese, blend of cheddar and mozzarella, reduced fat, low-moisture",2,2
+"pork, roasted",0,2
+"goat milk, whole",2,2
+chives,2,2
+pink bean,2,2
+"oil, vegetable, partially hydrogenated canola, partially hydrogenated corn, partially hydrogenated cottonseed, partially hydrogenated soybean",1,1
+petrolatum,0,2
+sweetcorn,2,2
+"fd&c yellow no. 6, calcium lake",0,0
+strawberry puree concentrate,2,2
+rock salt,2,0
+grape juice concentrate,2,2
+lemon verbena,2,2
+carrot juice concentrate,2,2
+"peanut, roasted in oil",2,2
+brewers yeast,2,2
+sweet orange,2,2
+"oil, soybean, hydrogenated",1,1
+acerola puree concentrate,2,2
+"shortening, vegetable, cottonseed oil, hydrogenated soybean oil",1,1
+"shortening, vegetable, partially hydrogenated palm oil",1,1
+ascorbyl palmitate,0,2
+barley,2,2
+loroco,2,2
+"beef, roasted, salted",0,2
+linseed,2,2
+lobster extract,2,0
+"chicken meat, in juice, roasted",2,2
+calcium oxide,1,2
+"molasses, dried",2,2
+"sunflower kernel, roasted in oil",2,2
+"mozzarella cheese, reduced fat, grated, with added vitamin a",2,2
+monoglycerides,0,0
+"chicken breast meat, skinless",2,2
+lavender absolute,0,2
+"shortening, vegetable, hydrogenated palm oil, palm kernel oil",1,1
+anchovy extract,2,2
+hydrolyzed whey protein,2,0
+raspberry pulp,2,2
+clam meat,2,2
+"apple juice, dried",2,2
+"whole-wheat pasta, cooked",2,2
+celery,2,2
+"mono- and diglycerides, ethoxylated",0,0
+mint extract,2,2
+mango butter,2,2
+german chamomile flower,2,2
+"apple sauce, with added ascorbic acid",2,2
+"cashew nut, salted",1,2
+clementine,2,2
+"whey, cultured. dried",2,2
+magnesium hydroxide,2,2
+"garlic, dried",2,2
+fd&c yellow no. 5,0,0
+potassium benzoate,0,2
+illipe,2,2
+onion juice,2,2
+"monk fruit, dried",2,2
+l-histidine,2,2
+barley extract,2,2
+pinto bean,2,2
+galactose,1,2
+chicken broth,2,0
+l-carnitine,0,2
+"oil, vegetable, partially hydrogenated coconut, partially hydrogenated palm, partially hydrogenated palm kernel",1,1
+sodium sulfite,0,0
+"onion, roasted",2,2
+disodium citrate,2,0
+melon juice concentrate,2,2
+black currant juice concentrate,2,2
+"torula yeast, dried",2,2
+"buttermilk, cultured, low fat, salted",2,2
+pasteurized process monterey jack cheese,2,2
+vitamin d,2,2
+watermelon juice concentrate,2,2
+"oil, vegetable, hydrogenated cottonseed, palm, soybean",1,1
+shrimp,2,2
+banana puree concentrate,2,2
+"turpentine, rectified",1,2
+bonito extract,0,2
+"cashew nut, roasted in oil",2,2
+"cashew nut, roasted",2,2
+hemp seed,2,2
+pumpkin puree,2,2
+"milk, condensed, dried",0,2
+sunflower seed protein,2,2
+passion fruit juice concentrate,2,2
+"wheat flour, bleached, with added vitamin a, enriched",2,0
+"cream cheese, cultured",2,2
+grape juice from concentrate,0,2
+"shortening, vegetable, canola oil, modified palm oil, palm kernel oil",1,1
+"beeswax, bleached",0,0
+ethylenediaminetetraacetate acid,0,0
+pineapple juice concentrate,2,2
+triglycerides,1,2
+d-gluconic acid,2,0
+peach leaf extract,0,0
+basil extract,2,2
+"oil, vegetable, modified palm, soybean",0,1
+"hazelnut, roasted",2,2
+rolled spelt,2,2
+pitaya puree,2,2
+"oil, vegetable, partially hydrogenated cottonseed, partially hydrogenated safflower, partially hydrogenated soybean",1,1
+capers,2,2
+"milk, nonfat, cultured, dried",0,2
+"margarine, composite, palm oil, palm kernel oil, soybean oil, salted",0,0
+pumpkin juice,2,2
+"margarine, composite, modified palm oil, soybean oil, salted",0,0
+"corn masa flour, enriched",2,0
+tomato puree,2,2
+cocoa solids,2,0
+aspartame,0,2
+pea protein,2,2
+erythritol,2,2
+"soybean, sprouted, dried",0,2
+"potato, fried",1,2
+spelt flour,2,2
+mustard extract,2,0
+curry leaf,2,0
+magnesium stearate,2,2
+brewed green tea,2,2
+"shortening, vegetable, palm oil, palm kernel oil",1,1
+sodium acid pyrophosphate,0,0
+"carrot, roasted",2,2
+hydrolyzed corn protein,0,0
+sodium tripolyphosphate,0,0
+hydroxypropyl methylcellulose,2,2
+pear pulp,2,2
+"edta, tetrasodium",0,0
+"mozzarella cheese, low-moisture",2,2
+reconstituted apples (with added sulfite agent),0,0
+"margarine, composite, canola oil, modified palm oil, soybean oil, with added vitamin d, salted",0,0
+vinegar,2,2
+"green onion, dried",2,2
+lactitol,0,2
+"chicken breast meat, grilled",2,2
+"margarine, composite, palm oil, palm kernel oil, salted",0,0
+"wheat flour, with added malted barley flour, ascorbic acid and enzymes, enriched",2,0
+"oil, vegetable, corn, palm, soybean",0,1
+monk fruit juice,2,2
+"cauliflower, dried",2,2
+"oil, jasmine",2,0
+"rye flour, whole-grain",2,2
+"cocoa powder, low fat",2,2
+"corn flour, cultured",2,2
+apricot puree concentrate,2,2
+chicken stock from concentrate,0,0
+beetroot puree,2,2
+chestnut leaf,0,0
+sodium ascorbate,2,0
+"milk, reduced fat",0,2
+"alfalfa grass, dried",2,2
+"margarine, composite, canola oil, modified palm oil, with added vitamin d, sweetened",0,0
+"swiss cheese, dried",2,2
+cashew nut,2,2
+"greek yogurt, whole",2,2
+pumpkin juice from concentrate,2,2
+"coriander, dried",2,2
+sodium caseinate,0,0
+acesulfame potassium,0,2
+"beef, cooked",0,2
+chocolate liquor (processed with alkali),0,0
+protein isolate,2,0
+radish extract (or color),2,2
+"oat, sprouted",2,2
+"tofu, dried",2,2
+rye fiber,2,2
+mustard seed,2,2
+brewed tea,2,2
+lemon peel extract,2,2
+tapioca starch,2,0
+juniper berry,0,2
+hawthorn,2,2
+"kelp, dried",2,2
+faba bean flour,2,2
+"margarine, composite, canola oil, modified palm oil",0,0
+corn fiber,2,2
+cocoa butter,2,2
+strawberry juice,2,2
+ume plum vinegar,2,2
+raspberry juice from concentrate,2,2
+"rice, enriched (not as per fda standards)",1,0
+"beef steak, cooked",0,2
+pitaya juice,2,2
+coffee bean,0,2
+"chicken breast meat, roasted",2,2
+raisin juice concentrate,1,2
+cardamom,2,2
+maltose,2,0
+"tomato, smoked",0,2
+"rice, enriched (not as per fda standards), cooked",0,0
+chickpea flour,2,2
+chia protein,2,2
+"oil, palm stearin, hydrogenated",1,1
+"wheat protein, cultured",0,0
+soy protein,2,0
+"corn syrup, modified",0,1
+"cauliflower, roasted",2,2
+"spelt flour, whole-grain",2,2
+mozzarella cheese,2,2
+brown sugar,0,1
+"tomato paste, salted",1,2
+"cranberry, sweetened",1,2
+corn starch,2,0
+"onion, smoked, dried",2,2
+milk fat,0,0
+guava puree,2,2
+red currant juice concentrate,2,2
+"artichoke, dried",2,2
+beta-d-fructofuranose,2,2
+mango,2,2
+fd&c blue no. 2,0,0
+onions,0,2
+sorbitan tristearate,0,2
+"shortening, vegetable, partially hydrogenated palm oil, partially hydrogenated soybean oil",1,1
+"oil, vegetable, partially hydrogenated soybean oil, soybean",1,1
+"oil, peach",0,0
+tomatillo,2,2
+"oil, grape seed",2,2
+beef,0,0
+fd&c red no. 3,0,1
+"pasta, cooked, salted",2,2
+anthocyanin,2,2
+"strawberries, dried, sweetened",2,2
+"shortening, vegetable, cottonseed oil, hydrogenated soybean oil, interestified soybean oil",0,1
+peach puree,2,2
+horseradish extract,2,2
+"margarine, composite, hydrogenated soybean oil, soybean oil, salted",0,1
+sodium bisulfate,1,0
+tallow,0,0
+"buckwheat, sprouted",2,2
+winter squash,2,2
+garlic juice,2,2
+"corn flour, enriched",2,0
+"crab meat, cooked",2,2
+"oil, olive",2,0
+tamarind juice,2,2
+tomato juice concentrate,2,2
+l-cysteine,0,2
+chia seed flour,2,2
+sweet pepper,2,2
+manchego cheese,2,2
+"broccoli, dried",2,2
+"oil, vegetable, palm olein",0,0
+pea protein isolate,2,0
+glucose syrup (with added sulfite agent),1,0
+rolled sprouted rye,2,2
+peru balsam oleoresin,0,0
+"barley, sprouted",2,2
+"shrimp meat, dried",2,2
+edam cheese,2,2
+carmine,0,2
+"corn syrup, dried",1,1
+"soy flour, roasted",2,2
+"shortening, vegetable, canola oil, hydrogenated soybean oil, palm oil, palm kernel oil, soybean oil",1,1
+"konjac root, dried",2,2
+vitamin a,2,2
+"berry, dried",2,2
+sage extract,0,0
+erythorbic acid,2,0
+"wheat, cultured",2,2
+"shortening, vegetable, hydrogenated soybean oil, soybean oil",1,1
+"oil, canola",0,0
+"pinto bean, sprouted",2,2
+quinoa flour,2,2
+calcium caseinate,0,0
+spinach juice concentrate,2,2
+"margarine, composite, hydrogenated soybean oil, soybean oil, with added vitamin d, salted",1,1
+fig (with added sulfite agent),0,0
+konjac gum,2,2
+grape puree,2,2
+acai berry juice concentrate,2,2
+acai berry puree,2,2
+calcium sulfite,0,0
+"milk fat, cultured",2,0
+"soy protein, modified",0,0
+ammonium carbonate,1,0
+lemon balm leaf extract,2,2
+grape seed extract,2,2
+multi-grain noodles,2,2
+ammonium sulfate,0,0
+clam broth,2,2
+sodium hydroxide,1,0
+"oil, high oleic canola",2,2
+pectin,2,2
+d-limonene,0,2
+"oil, vegetable, hydrogenated cottonseed, soybean",1,1
+"margarine, composite, palm oil, soybean oil, with added vitamin d, salted",0,0
+kiwifruit puree,2,2
+beta-apo-8'-carotenal,0,2
+thiamine mononitrate,2,2
+"fd&c yellow no. 6, aluminum lake",0,0
+fd&c red no. 2--delisted,0,1
+"oil, shea nut",2,0
+"shortening, vegetable, canola oil, hydrogenated cottonseed oil",1,1
+"glucose syrup, dried",0,1
+shallot,2,2
+"orange peel, dried",2,2
+cod,2,2
+"cottonseed flour, partially defatted, roasted",0,2
+"wheat flour, enriched",2,0
+"degerminated corn meal, enriched",2,0
+orange peel,2,0
+"ground beef, cooked",2,0
+"green bean, dried",2,2
+potassium bromate,1,2
+tuna,2,2
+strawberry juice from concentrate,2,2
+"pasta, cooked in oil",2,2
+elderberry,0,2
+cherry puree,2,2
+rye flour,2,2
+kale juice from concentrate,2,2
+"shortening, vegetable, hydrogenated palm oil, hydrogenated palm kernel oil",1,1
+"ammonium phosphate, monobasic",0,0
+blackberry,2,2
+navy bean flour,2,2
+calcium malate,2,0
+"chickpea, cooked, salted",2,2
+butternut squash puree,2,2
+prune juice concentrate,2,2
+"shortening, vegetable, cottonseed oil, partially hydrogenated soybean oil",1,1
+"clam, in juice, cooked",2,2
+"aloe vera, dried",2,2
+"calcium phosphate, tribasic",2,0
+capsanthin,2,2
+lobster meat,2,2
+amaranth grain,2,2
+agave syrup,1,1
+"goji, dried",2,2
+"oil, palm kernel, fractionated",1,1
+tomato pulp,2,2
+clam broth concentrate,2,2
+grana cheese,2,2
+spelt,2,2
+eggs,0,2
+roman chamomile flower,2,0
+"licorice extract, dried",0,0
+turkey dark meat,2,2
+"chicken broth, dried",2,2
+rolled wheat,2,2
+"shortening, vegetable, hydrogenated coconut oil",1,1
+chicken bone,2,0
+grapefruit juice from concentrate,0,0
+"shortening, vegetable, partially hydrogenated soybean oil, partially hydrogenated sunflower oil",1,1
+"oil, coconut",0,0
+"brewed green tea, decaffeinated",2,2
+"sorghum flour, whole-grain",2,2
+guava syrup,1,1
+"watermelon juice, dried",2,2
+"noodles, cooked, salted",2,2
+"oregano, dried",2,2
+pear,2,2
+almond protein,2,2
+"pineapple, in juice",2,2
+pear puree from concentrate,0,2
+"beef steak, broiled",0,0
+ferrous sulfate,2,2
+brewed black tea,2,2
+"kidney bean, cooked",2,2
+albumin,2,2
+sweet potato juice from concentrate,2,2
+tomato concentrate,2,2
+"flavored yogurt, low fat",0,0
+mandarin orange,2,2
+elderberry extract (or color),0,0
+"brown rice, partially milled",2,2

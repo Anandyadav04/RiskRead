@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+    <div class="logo">RiskRead</div>
+    <div class="tagline">Analysis Results</div>
+</header>
+
+<main>
+    <a href="/" class="btn" style="margin-bottom: 30px;">← Back to Analyzer</a>
+    
+    <div class="card">
+        <h2>📊 Analysis Summary</h2>
+        <div class="stats">
+            <div class="stat-card stat-total">
+                <div class="stat-number">{{ stats.total }}</div>
+                <div>Total Ingredients</div>
+            </div>
+            <div class="stat-card stat-safe">
+                <div class="stat-number">{{ stats.safe }}</div>
+                <div>Safe</div>
+            </div>
+            <div class="stat-card stat-controversial">
+                <div class="stat-number">{{ stats.controversial }}</div>
+                <div>Controversial</div>
+            </div>
+            <div class="stat-card stat-harmful">
+                <div class="stat-number">{{ stats.harmful }}</div>
+                <div>Potentially Harmful</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>🧪 Detailed Analysis</h2>
+        <ul class="ingredient-list">
+            {% for prediction in predictions %}
+            <li class="ingredient-item {{ prediction.label|lower|replace(' ', '-') }}">
+                <div style="flex-grow: 1;">
+                    <h3 style="margin-bottom: 5px;">{{ prediction.ingredient }}</h3>
+                    <p style="color: #666; font-size: 14px;">{{ prediction.explanation }}</p>
+                </div>
+                <span class="status-badge badge-{{ prediction.label|lower|replace(' ', '-') }}">
+                    {{ prediction.label }}
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    {% if source_type == "image" %}
+    <div class="card">
+        <h3>📷 Extracted Text</h3>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; font-family: monospace;">
+            {{ original_text }}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="card">
+        <h3>📝 Legend</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div style="display: flex; align-items: center;">
+                <div style="width: 20px; height: 20px; background: #48bb78; border-radius: 50%; margin-right: 10px;"></div>
+                <div>
+                    <strong>Safe</strong>
+                    <p style="font-size: 14px; color: #666;">Generally recognized as safe</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <div style="width: 20px; height: 20px; background: #f6e05e; border-radius: 50%; margin-right: 10px;"></div>
+                <div>
+                    <strong>Controversial</strong>
+                    <p style="font-size: 14px; color: #666;">Mixed safety reviews</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <div style="width: 20px; height: 20px; background: #f56565; border-radius: 50%; margin-right: 10px;"></div>
+                <div>
+                    <strong>Harmful</strong>
+                    <p style="font-size: 14px; color: #666;">Potential health risks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>RiskRead - Final Year Project | <a href="/" style="color: #4facfe;">Analyze More Ingredients</a></p>
+    <p><small>⚠️ Note: This tool provides informational analysis only. Always consult healthcare professionals.</small></p>
+</footer>
+{% endblock %}
