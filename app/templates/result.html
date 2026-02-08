@@ -32,24 +32,122 @@
                     <h2 class="card-title">Overview</h2>
                 </div>
 
-                <div class="stats">
-                    <div class="stat-card stat-total">
-                        <div class="stat-number">{{ stats.total }}</div>
-                        <div style="color: var(--text-secondary); font-weight: 600;">Ingredients Found</div>
+                <div class="stats-container"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                    <!-- Chart Side -->
+                    <div class="chart-wrapper"
+                        style="position: relative; height: 250px; width: 100%; display: flex; justify-content: center;">
+                        <canvas id="safetyChart"></canvas>
+                        <!-- Center Text Overlay -->
+                        <div
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                            <div style="font-size: 2.5rem; font-weight: 800; color: var(--text-primary);">
+                                {{ stats.total | default(0) }}
+                            </div>
+                            <div
+                                style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">
+                                Total</div>
+                        </div>
                     </div>
-                    <div class="stat-card stat-safe">
-                        <div class="stat-number">{{ stats.safe }}</div>
-                        <div style="color: #22543d; font-weight: 600;">Approved/Safe</div>
-                    </div>
-                    <div class="stat-card stat-controversial">
-                        <div class="stat-number">{{ stats.controversial }}</div>
-                        <div style="color: #744210; font-weight: 600;">Controversial</div>
-                    </div>
-                    <div class="stat-card stat-harmful">
-                        <div class="stat-number">{{ stats.harmful }}</div>
-                        <div style="color: #c53030; font-weight: 600;">Potential Risks</div>
+
+                    <!-- Stats Side -->
+                    <div class="stats-grid" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                        <div class="stat-row"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f0fff4; border-radius: 10px; border-left: 5px solid #48bb78;">
+                            <div>
+                                <div style="font-weight: 700; color: #22543d;">Approved / Safe</div>
+                                <div style="font-size: 0.85rem; color: #48bb78;">Risk Free</div>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #22543d;">
+                                {{ stats.safe | default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="stat-row"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fffaf0; border-radius: 10px; border-left: 5px solid #d69e2e;">
+                            <div>
+                                <div style="font-weight: 700; color: #744210;">Controversial</div>
+                                <div style="font-size: 0.85rem; color: #d69e2e;">Moderate Caution</div>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #744210;">
+                                {{ stats.controversial | default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="stat-row"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff5f5; border-radius: 10px; border-left: 5px solid #f56565;">
+                            <div>
+                                <div style="font-weight: 700; color: #742a2a;">Potential Risks</div>
+                                <div style="font-size: 0.85rem; color: #f56565;">Avoid if possible</div>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #742a2a;">
+                                {{ stats.harmful | default(0) }}
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Add Chart.js -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const ctx = document.getElementById('safetyChart').getContext('2d');
+
+                    const data = {
+                        labels: ['Safe', 'Controversial', 'Harmful'],
+                        datasets: [{
+                            data: [
+                                {{ stats.safe | default(0) }},
+                                {{ stats.controversial | default(0) }},
+                                {{ stats.harmful | default(0) }}
+                            ],
+                            backgroundColor: [
+                                '#48bb78', // Green for Safe
+                                '#ecc94b', // Yellow for Controversial
+                                '#f56565'  // Red for Harmful
+                            ],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    };
+
+                    const config = {
+                        type: 'doughnut',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '75%',
+                            plugins: {
+                                legend: {
+                                    display: false // Hide default legend as we have custom stats
+                                },
+                                tooltip: {
+                                    enabled: true,
+                                    backgroundColor: 'rgba(0,0,0,0.8)',
+                                    padding: 12,
+                                    cornerRadius: 8,
+                                    callbacks: {
+                                        label: function (context) {
+                                            const label = context.label || '';
+                                            const value = context.raw || 0;
+                                            const total = context.chart._metasets[context.datasetIndex].total;
+                                            const percentage = Math.round((value / total) * 100) + '%';
+                                            return label + ': ' + value + ' (' + percentage + ')';
+                                        }
+                                    }
+                                }
+                            },
+                            animation: {
+                                animateScale: true,
+                                animateRotate: true
+                            }
+                        }
+                    };
+
+                    new Chart(ctx, config);
+                });
+            </script>
             </div>
 
             <!-- Detailed Results -->
