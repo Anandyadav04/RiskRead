@@ -2,83 +2,155 @@
 
 {% block content %}
 <header>
-    <div class="logo">RiskRead</div>
-    <div class="tagline">Analysis Results</div>
+    <div class="header-content" style="padding-bottom: 20px;">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="logo-text">Analysis Report</div>
+        </div>
+        <div class="tagline">
+            Here's the safety breakdown of your ingredients based on scientific data.
+        </div>
+    </div>
 </header>
 
 <main>
-    <a href="/" class="btn" style="margin-bottom: 30px;">← Back to Analyzer</a>
-    
-    <div class="card">
-        <h2>📊 Analysis Summary</h2>
-        <div class="stats">
-            <div class="stat-card stat-total">
-                <div class="stat-number">{{ stats.total }}</div>
-                <div>Total Ingredients</div>
+    <div class="content-grid">
+        <div class="main-content">
+            <a href="/" class="btn"
+                style="margin-bottom: 20px; background: white; color: var(--text-primary); box-shadow: var(--shadow-sm);">
+                <i class="fas fa-arrow-left"></i> Analyze Another Label
+            </a>
+
+            <!-- Summary Stats -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h2 class="card-title">Overview</h2>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card stat-total">
+                        <div class="stat-number">{{ stats.total }}</div>
+                        <div style="color: var(--text-secondary); font-weight: 600;">Ingredients Found</div>
+                    </div>
+                    <div class="stat-card stat-safe">
+                        <div class="stat-number">{{ stats.safe }}</div>
+                        <div style="color: #22543d; font-weight: 600;">Approved/Safe</div>
+                    </div>
+                    <div class="stat-card stat-controversial">
+                        <div class="stat-number">{{ stats.controversial }}</div>
+                        <div style="color: #744210; font-weight: 600;">Controversial</div>
+                    </div>
+                    <div class="stat-card stat-harmful">
+                        <div class="stat-number">{{ stats.harmful }}</div>
+                        <div style="color: #c53030; font-weight: 600;">Potential Risks</div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card stat-safe">
-                <div class="stat-number">{{ stats.safe }}</div>
-                <div>Safe</div>
+
+            <!-- Detailed Results -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-list-ul"></i>
+                    </div>
+                    <h2 class="card-title">Detailed Breakdown</h2>
+                </div>
+
+                <ul class="ingredient-list">
+                    {% for prediction in predictions %}
+                    {% set css_class = prediction.label|lower|replace(' ', '-') %}
+                    <li class="ingredient-item {{ css_class }}">
+                        <div style="flex-grow: 1;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                <h3 style="font-size: 1.1rem; margin: 0;">{{ prediction.ingredient }}</h3>
+                                {% if css_class == 'harmful' %}
+                                <i class="fas fa-exclamation-circle" style="color: #f56565;" title="Harmful"></i>
+                                {% elif css_class == 'controversial' %}
+                                <i class="fas fa-exclamation-triangle" style="color: #ecc94b;"
+                                    title="Controversial"></i>
+                                {% else %}
+                                <i class="fas fa-check-circle" style="color: #48bb78;" title="Safe"></i>
+                                {% endif %}
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;">{{
+                                prediction.explanation }}</p>
+                        </div>
+                        <span class="status-badge badge-{{ css_class }}">
+                            {{ prediction.label }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
-            <div class="stat-card stat-controversial">
-                <div class="stat-number">{{ stats.controversial }}</div>
-                <div>Controversial</div>
+
+            {% if source_type == "image" %}
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h2 class="card-title">Extracted Text (OCR)</h2>
+                </div>
+                <div
+                    style="background: #f8fafc; padding: 20px; border-radius: 12px; font-family: 'Consolas', 'Monaco', monospace; border: 1px solid var(--border-color); color: var(--text-secondary); max-height: 300px; overflow-y: auto;">
+                    {{ original_text }}
+                </div>
             </div>
-            <div class="stat-card stat-harmful">
-                <div class="stat-number">{{ stats.harmful }}</div>
-                <div>Potentially Harmful</div>
-            </div>
+            {% endif %}
         </div>
-    </div>
-    
-    <div class="card">
-        <h2>🧪 Detailed Analysis</h2>
-        <ul class="ingredient-list">
-            {% for prediction in predictions %}
-            <li class="ingredient-item {{ prediction.label|lower|replace(' ', '-') }}">
-                <div style="flex-grow: 1;">
-                    <h3 style="margin-bottom: 5px;">{{ prediction.ingredient }}</h3>
-                    <p style="color: #666; font-size: 14px;">{{ prediction.explanation }}</p>
-                </div>
-                <span class="status-badge badge-{{ prediction.label|lower|replace(' ', '-') }}">
-                    {{ prediction.label }}
-                </span>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    
-    {% if source_type == "image" %}
-    <div class="card">
-        <h3>📷 Extracted Text</h3>
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; font-family: monospace;">
-            {{ original_text }}
-        </div>
-    </div>
-    {% endif %}
-    
-    <div class="card">
-        <h3>📝 Legend</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            <div style="display: flex; align-items: center;">
-                <div style="width: 20px; height: 20px; background: #48bb78; border-radius: 50%; margin-right: 10px;"></div>
-                <div>
-                    <strong>Safe</strong>
-                    <p style="font-size: 14px; color: #666;">Generally recognized as safe</p>
-                </div>
+
+        <div class="sidebar">
+            <div class="info-card">
+                <h3><i class="fas fa-info-circle"></i> Understanding Levels</h3>
+                <ul class="feature-list">
+                    <li class="feature-item" style="align-items: flex-start;">
+                        <div class="feature-icon" style="background: #48bb78;">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <strong>Safe / Not Harmful</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">Generally recognized as safe
+                                (GRAS) by food safety authorities.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item" style="align-items: flex-start;">
+                        <div class="feature-icon" style="background: #f6e05e;">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        <div>
+                            <strong>Controversial</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">Mixed scientific studies or
+                                potential concerns in large quantities.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item" style="align-items: flex-start;">
+                        <div class="feature-icon" style="background: #f56565;">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div>
+                            <strong>Potentially Harmful</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">Linked to adverse health effects
+                                or restricted in some regions.</p>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <div style="display: flex; align-items: center;">
-                <div style="width: 20px; height: 20px; background: #f6e05e; border-radius: 50%; margin-right: 10px;"></div>
-                <div>
-                    <strong>Controversial</strong>
-                    <p style="font-size: 14px; color: #666;">Mixed safety reviews</p>
-                </div>
-            </div>
-            <div style="display: flex; align-items: center;">
-                <div style="width: 20px; height: 20px; background: #f56565; border-radius: 50%; margin-right: 10px;"></div>
-                <div>
-                    <strong>Harmful</strong>
-                    <p style="font-size: 14px; color: #666;">Potential health risks</p>
+
+            <div class="info-card">
+                <h3><i class="fas fa-flask"></i> Analysis Info</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                    This analysis uses a machine learning model trained on over 2,500 common ingredients.
+                </p>
+                <div style="padding: 15px; background: #e0f2fe; border-radius: 8px; border: 1px solid #bae6fd;">
+                    <strong style="color: #0369a1;"><i class="fas fa-shield-alt"></i> Disclaimer</strong>
+                    <p style="font-size: 0.85rem; color: #0c4a6e; margin-top: 5px;">
+                        For informational purposes only. Results may vary. Consult a professional for medical advice.
+                    </p>
                 </div>
             </div>
         </div>
@@ -86,7 +158,10 @@
 </main>
 
 <footer>
-    <p>RiskRead - Final Year Project | <a href="/" style="color: #4facfe;">Analyze More Ingredients</a></p>
-    <p><small>⚠️ Note: This tool provides informational analysis only. Always consult healthcare professionals.</small></p>
+    <div class="footer-content">
+        <p style="color: #94a3b8;">
+            © 2026 RiskRead AI. Mini-Project
+        </p>
+    </div>
 </footer>
 {% endblock %}

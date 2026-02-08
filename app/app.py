@@ -20,7 +20,7 @@ app.secret_key = 'riskread-secret-key-2024'
 # Configuration
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'tiff'}
-MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 5MB max file size
+MAX_CONTENT_LENGTH = 32 * 1024 * 1024  # 32MB max file size
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
@@ -281,7 +281,7 @@ def api_predict():
 
 @app.errorhandler(413)
 def too_large(e):
-    return "File is too large. Maximum size is 5MB.", 413
+    return "File is too large. Maximum size is 32MB.", 413
 
 if __name__ == '__main__':
     print("\n🌐 Open http://localhost:5000 in your browser")
