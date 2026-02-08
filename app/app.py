@@ -279,113 +279,11 @@ def api_predict():
         'explanation': explanation
     })
 
-@app.route('/demo_paste', methods=['GET'])
-def demo_paste():
-    """Demo page for testing paste functionality"""
-    return '''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>RiskRead - Paste Image Demo</title>
-        <style>
-            body { font-family: Arial; padding: 40px; max-width: 800px; margin: 0 auto; }
-            .demo-area { border: 3px dashed #4facfe; padding: 60px; text-align: center; 
-                        border-radius: 20px; background: #f8fafc; margin: 20px 0; }
-            .demo-area.dragover { background: #e0f2fe; }
-            button { padding: 15px 30px; background: #4facfe; color: white; 
-                    border: none; border-radius: 10px; cursor: pointer; font-size: 16px; }
-            #preview img { max-width: 300px; margin: 20px 0; border-radius: 10px; }
-        </style>
-    </head>
-    <body>
-        <h1>🎨 Test Image Paste Feature</h1>
-        <p>Try pasting an image (Ctrl+V) or drag & drop into the box below:</p>
-        
-        <div class="demo-area" id="pasteBox">
-            <div style="font-size: 48px;">📋</div>
-            <h3>Paste Image Here (Ctrl+V)</h3>
-            <p>Or drag and drop an image file</p>
-        </div>
-        
-        <div id="preview"></div>
-        
-        <button onclick="sendToRiskRead()" id="analyzeBtn" disabled>🔍 Analyze with RiskRead</button>
-        <button onclick="clearPaste()">❌ Clear</button>
-        
-        <div id="status" style="margin-top: 20px;"></div>
-        
-        <script>
-            let pastedImage = null;
-            
-            document.addEventListener('paste', function(e) {
-                const items = e.clipboardData.items;
-                
-                for (let i = 0; i < items.length; i++) {
-                    if (items[i].type.indexOf('image') !== -1) {
-                        const blob = items[i].getAsFile();
-                        pastedImage = blob;
-                        
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            document.getElementById('preview').innerHTML = `
-                                <h3>✅ Image Pasted!</h3>
-                                <img src="${e.target.result}">
-                                <p>Size: ${(blob.size / 1024).toFixed(1)} KB</p>
-                            `;
-                            document.getElementById('analyzeBtn').disabled = false;
-                        };
-                        reader.readAsDataURL(blob);
-                        break;
-                    }
-                }
-            });
-            
-            function sendToRiskRead() {
-                if (!pastedImage) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Data = e.target.result.split(',')[1];
-                    
-                    // Create form and submit
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '/analyze';
-                    
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'image_data';
-                    input.value = base64Data;
-                    
-                    form.appendChild(input);
-                    document.body.appendChild(form);
-                    form.submit();
-                };
-                reader.readAsDataURL(pastedImage);
-            }
-            
-            function clearPaste() {
-                pastedImage = null;
-                document.getElementById('preview').innerHTML = '';
-                document.getElementById('analyzeBtn').disabled = true;
-            }
-        </script>
-    </body>
-    </html>
-    '''
-
 @app.errorhandler(413)
 def too_large(e):
     return "File is too large. Maximum size is 5MB.", 413
 
 if __name__ == '__main__':
-    print("🚀 Starting RiskRead Application...")
-    print("📋 Features:")
-    print("   ✅ Text input analysis")
-    print("   📁 Image file upload")
-    print("   📋 Image paste support (Ctrl+V)")
-    print("   🔗 API endpoint available")
     print("\n🌐 Open http://localhost:5000 in your browser")
-    print("📋 Paste test: http://localhost:5000/demo_paste")
     print("="*60)
     app.run(debug=True, host='0.0.0.0', port=5000)
