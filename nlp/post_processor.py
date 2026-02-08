@@ -21,8 +21,13 @@ class PostProcessor:
             'oo ': '',
             'q ': '',
             'artifical': 'artificial',
+            'artif igial': 'artificial',
             'flavour': 'flavor',
             'flavours': 'flavors',
+            'gorn': 'corn',
+            'tap ioga': 'tapioca',
+            'st argh': 'starch',
+            'nat ural': 'natural',
             '~~': '',
             '~~ ': '',
         }
@@ -85,7 +90,43 @@ class PostProcessor:
         # Looks like a page number or code
         if re.match(r'^[pq]\d+$', text_lower):
             return True
+            
+        # Check for gibberish
+        if self._is_gibberish_item(text):
+            return True
         
+        return False
+
+    def _is_gibberish_item(self, text):
+        """Check if an individual item looks like OCR garbage"""
+        text = text.lower().strip()
+        
+        # Allow specific short valid ingredients
+        allow_list = {'tea', 'egg', 'oil', 'fat', 'salt', 'ham', 'beef', 'pork', 'lamb', 'cod', 'fish', 'ice', 'msg', 'ph', 'b6', 'b12'}
+        if text in allow_list:
+            return False
+            
+        # 1. Check for vowels (must have at least one vowel or 'y')
+        if not re.search(r'[aeiouy]', text):
+            return True
+            
+        # 2. Check for "word salad" (e.g., "er ety ee ets")
+        # If it has 3+ words and average word length is < 3
+        words = text.split()
+        if len(words) >= 3:
+            avg_len = sum(len(w) for w in words) / len(words)
+            if avg_len < 2.5:
+                return True
+        
+        # 3. Check for repeating characters (e.g., "eeeee", "ll ll")
+        if re.search(r'(.)\1{2,}', text): # 3 identical chars in a row
+            return True
+            
+        # 4. Check for high ratio of non-alpha characters (excluding spaces)
+        alpha_count = len(re.findall(r'[a-z]', text))
+        if len(text) > 0 and (alpha_count / len(text)) < 0.5:
+            return True
+            
         return False
     
     def _fix_common_errors(self, text):

@@ -82,8 +82,9 @@ class IngredientExtractor:
         cleaned_text = self.clean_text(text)
         print(f"NLP DEBUG: Cleaned text: {cleaned_text[:200]}...")
         
-        # Replace all separators with commas
-        for sep in [';', '\n', '•', '/', ' and ', ' & ', ' or ']:
+        # Replace major separators with commas
+        # Removed '/' to preserve "Glucose/Fructose"
+        for sep in [';', '\n', '•', ' and ', ' & ', ' or ']:
             cleaned_text = cleaned_text.replace(sep, ',')
         
         # Split by commas
@@ -125,12 +126,49 @@ class IngredientExtractor:
         print(f"NLP DEBUG: Extracted ingredients: {unique_ingredients}")
         return unique_ingredients
     
+    def is_gibberish(self, text):
+        """Check if text looks like OCR garbage"""
+        if not text or len(text) < 5:
+            return True
+        
+        # 1. Check for common English stop words or ingredient words
+        # If we see 'and', 'the', 'sugar', 'water', 'oil', it's likely valid
+        common_words = {'and', 'the', 'with', 'contains', 'ingredients', 'sugar', 'water', 'oil', 'salt', 'acid', 'milk', 'soy'}
+        words = set(re.findall(r'\b[a-z]{3,}\b', text.lower()))
+        
+        if any(w in words for w in common_words):
+            return False
+            
+        # 2. Check average word length
+        # Garbage often looks like "a b c d e f g" or "as df gh jk"
+        all_words = re.findall(r'\b[a-z]+\b', text.lower())
+        if not all_words:
+            return True
+            
+        avg_len = sum(len(w) for w in all_words) / len(all_words)
+        if avg_len < 2.5: # Mostly 1-2 char words
+            return True
+            
+        # 3. Check vowel/consonant ratio (rough heuristic)
+        # Garbage often lacks vowels "bcdfghjkl"
+        vowels = len(re.findall(r'[aeiou]', text.lower()))
+        consonants = len(re.findall(r'[bcdfghjklmnpqrstvwxyz]', text.lower()))
+        if consonants > 0 and (vowels / consonants) < 0.1:
+            return True
+            
+        return False
+
     def extract_from_ocr(self, ocr_text):
-        """Specialized extraction for OCR text - SIMPLE RELIABLE VERSION"""
+        """Specialized extraction for OCR text"""
         if not ocr_text or ocr_text.strip() == "No text detected":
             print("NLP DEBUG: OCR returned no text")
             return []
         
+        # Check for gibberish BEFORE any processing
+        if self.is_gibberish(ocr_text):
+            print("NLP DEBUG: Text detected as gibberish! Skipping.")
+            return []
+            
         print(f"NLP DEBUG: OCR text received: {ocr_text[:200]}...")
         
         # Convert to lowercase
@@ -145,17 +183,7 @@ class IngredientExtractor:
         # Remove "LESS THAN X% OF" pattern
         text = re.sub(r'less than\s*\d+%\s*of[:\s]*', '', text, flags=re.IGNORECASE)
         
-        # Fix common OCR errors
-        corrections = {
-            'gorn': 'corn',
-            'tap ioga': 'tapioca',
-            'st argh': 'starch',
-            'artif igial': 'artificial',
-            'nat ural': 'natural',
-        }
-        
-        for wrong, right in corrections.items():
-            text = text.replace(wrong, right)
+        # Note: Typo correction moved to post_processor.py
         
         print(f"NLP DEBUG: Processed text: {text[:200]}...")
         

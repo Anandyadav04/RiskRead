@@ -20,7 +20,7 @@ app.secret_key = 'riskread-secret-key-2024'
 # Configuration
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'tiff'}
-MAX_CONTENT_LENGTH = 32 * 1024 * 1024  # 32MB max file size
+MAX_CONTENT_LENGTH = 64 * 1024 * 1024  # 64MB max file size
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
@@ -201,26 +201,38 @@ def analyze():
         if not ingredients:
             print("  ⚠️ WARNING: No ingredients extracted!")
             
-            # Try emergency extraction
-            print("  Trying emergency extraction...")
-            emergency_ingredients = []
-            # Simple split by comma
-            for part in extracted_text.split(','):
-                part = part.strip()
-                if part and len(part) > 3:
-                    # Remove common prefixes
-                    for prefix in ['made of:', 'contains:', 'ingredients:', 'less than']:
-                        if part.lower().startswith(prefix):
-                            part = part[len(prefix):].strip()
-                    if part:
-                        emergency_ingredients.append(part)
-            
-            if emergency_ingredients:
-                ingredients = emergency_ingredients
-                print(f"  ✅ Emergency extraction found: {ingredients}")
+            # Check if it was rejected as gibberish (i.e., we had text but got 0 ingredients)
+            if source_type == "image" and extracted_text and len(extracted_text) > 10:
+                 # If the extractor rejected it (returned []), it likely detected gibberish.
+                 # Trust the extractor and DO NOT try emergency extraction.
+                 print("  🛑 Skipping emergency extraction (likely gibberish).")
             else:
-                flash("❌ No ingredients found. Please try again with clearer input.", "error")
-                return render_template('index.html')
+                # Only try emergency extraction for TEXT input or if OCR gave something vaguely plausible but we failed to parse it
+                print("  Trying emergency extraction...")
+                emergency_ingredients = []
+                # Simple split by comma
+                for part in extracted_text.split(','):
+                    part = part.strip()
+                    if part and len(part) > 3:
+                        # Remove common prefixes
+                        for prefix in ['made of:', 'contains:', 'ingredients:', 'less than']:
+                            if part.lower().startswith(prefix):
+                                part = part[len(prefix):].strip()
+                        
+                        # Basic gibberish check for emergency parts
+                        if len(part) < 20 and len(re.findall(r'[aeiou]', part.lower())) == 0:
+                             continue # Skip parts with no vowels
+                             
+                        if part:
+                            emergency_ingredients.append(part)
+                
+                if emergency_ingredients:
+                    ingredients = emergency_ingredients
+                    print(f"  ✅ Emergency extraction found: {ingredients}")
+
+        if not ingredients:
+             flash("❌ No valid ingredients found. The image quality might be too low or the text is unreadable.", "error")
+             return render_template('index.html')
         
         # ===== MAKE PREDICTIONS =====
         print(f"\n🤖 DEBUG: Making predictions...")
@@ -281,7 +293,7 @@ def api_predict():
 
 @app.errorhandler(413)
 def too_large(e):
-    return "File is too large. Maximum size is 32MB.", 413
+    return "File is too large. Maximum size is 64MB.", 413
 
 if __name__ == '__main__':
     print("\n🌐 Open http://localhost:5000 in your browser")

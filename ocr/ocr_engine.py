@@ -12,7 +12,7 @@ class OCREngine:
             pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     
     def preprocess_image(self, image_array):
-        """Improved preprocessing for better OCR results"""
+        """Standard preprocessing: Upscale + Gentle Threshold"""
         try:
             # Convert to grayscale
             if len(image_array.shape) == 3:
@@ -20,24 +20,22 @@ class OCREngine:
             else:
                 gray = image_array
             
-            # Resize if too small
+            # Upscale if needed (crucial for small text)
             height, width = gray.shape
-            if height < 100 or width < 100:
-                scale = max(300/height, 300/width)
-                new_height = int(height * scale)
-                new_width = int(width * scale)
-                gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
+            scale_factor = 2.0
+            if height < 1000:
+                scale_factor = max(2.0, 1000/height)
+                
+            new_height = int(height * scale_factor)
+            new_width = int(width * scale_factor)
+            gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
             
-            # Apply adaptive thresholding (better for uneven lighting)
+            # Simple thresholding (works best for clear text)
+            # Try a very simple binary threshold first if image quality is decent
+            # But adaptive handles shadows. Let's use a very GENTLE adaptive.
             gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
                                         cv2.THRESH_BINARY, 11, 2)
-            
-            # Remove noise
-            gray = cv2.medianBlur(gray, 3)
-            
-            # Enhance contrast
-            gray = cv2.convertScaleAbs(gray, alpha=1.2, beta=50)
-            
+                                        
             return gray
             
         except Exception as e:
@@ -48,27 +46,28 @@ class OCREngine:
         """Extract text from image file or bytes"""
         try:
             if image_path:
-                # Read from file path
                 img = cv2.imread(image_path)
-                if img is None:
-                    return "Error: Could not read image file"
             elif image_bytes:
-                # Read from bytes
                 image = Image.open(io.BytesIO(image_bytes))
                 img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
             else:
                 return "Error: No image provided"
             
-            # Preprocess
+            if img is None: return "Error: Could not process image"
+            
             processed = self.preprocess_image(img)
             
-            # Extract text
-            text = pytesseract.image_to_string(processed)
+            # Config: Use PSM 6 (Assume a single uniform block of text)
+            # This is generally the most reliable for copy-pasted text blocks
+            custom_config = r'--psm 6' 
             
-            # Clean up text
-            text = ' '.join(text.split())  # Remove extra whitespace
+            text = pytesseract.image_to_string(processed, config=custom_config)
             
-            return text if text.strip() else "No text detected"
+            # Post-Processing cleanup
+            lines = [line.strip() for line in text.split('\n') if line.strip()]
+            text = ' '.join(lines)
+            
+            return text if text else "No text detected"
             
         except Exception as e:
             return f"OCR Error: {str(e)}"
