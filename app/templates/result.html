@@ -37,7 +37,10 @@
                     <!-- Chart Side -->
                     <div class="chart-wrapper"
                         style="position: relative; height: 250px; width: 100%; display: flex; justify-content: center;">
-                        <canvas id="safetyChart"></canvas>
+                        <canvas id="safetyChart" data-safe="{{ stats.safe | default(0) }}"
+                            data-controversial="{{ stats.controversial | default(0) }}"
+                            data-harmful="{{ stats.harmful | default(0) }}">
+                        </canvas>
                         <!-- Center Text Overlay -->
                         <div
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
@@ -89,65 +92,67 @@
 
                 <!-- Add Chart.js -->
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const ctx = document.getElementById('safetyChart').getContext('2d');
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const canvas = document.getElementById('safetyChart');
+                        const ctx = canvas.getContext('2d');
 
-                    const data = {
-                        labels: ['Safe', 'Controversial', 'Harmful'],
-                        datasets: [{
-                            data: [
-                                {{ stats.safe | default(0) }},
-                                {{ stats.controversial | default(0) }},
-                                {{ stats.harmful | default(0) }}
-                            ],
-                            backgroundColor: [
-                                '#48bb78', // Green for Safe
-                                '#ecc94b', // Yellow for Controversial
-                                '#f56565'  // Red for Harmful
-                            ],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
-                    };
+                        // Read values from data attributes
+                        const safeCount = parseInt(canvas.dataset.safe) || 0;
+                        const controversialCount = parseInt(canvas.dataset.controversial) || 0;
+                        const harmfulCount = parseInt(canvas.dataset.harmful) || 0;
 
-                    const config = {
-                        type: 'doughnut',
-                        data: data,
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            cutout: '75%',
-                            plugins: {
-                                legend: {
-                                    display: false // Hide default legend as we have custom stats
-                                },
-                                tooltip: {
-                                    enabled: true,
-                                    backgroundColor: 'rgba(0,0,0,0.8)',
-                                    padding: 12,
-                                    cornerRadius: 8,
-                                    callbacks: {
-                                        label: function (context) {
-                                            const label = context.label || '';
-                                            const value = context.raw || 0;
-                                            const total = context.chart._metasets[context.datasetIndex].total;
-                                            const percentage = Math.round((value / total) * 100) + '%';
-                                            return label + ': ' + value + ' (' + percentage + ')';
+                        const data = {
+                            labels: ['Safe', 'Controversial', 'Harmful'],
+                            datasets: [{
+                                data: [safeCount, controversialCount, harmfulCount],
+                                backgroundColor: [
+                                    '#48bb78', // Green for Safe
+                                    '#ecc94b', // Yellow for Controversial
+                                    '#f56565'  // Red for Harmful
+                                ],
+                                borderWidth: 0,
+                                hoverOffset: 4
+                            }]
+                        };
+
+                        const config = {
+                            type: 'doughnut',
+                            data: data,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutout: '75%',
+                                plugins: {
+                                    legend: {
+                                        display: false // Hide default legend as we have custom stats
+                                    },
+                                    tooltip: {
+                                        enabled: true,
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        padding: 12,
+                                        cornerRadius: 8,
+                                        callbacks: {
+                                            label: function (context) {
+                                                const label = context.label || '';
+                                                const value = context.raw || 0;
+                                                const total = context.chart._metasets[context.datasetIndex].total;
+                                                const percentage = Math.round((value / total) * 100) + '%';
+                                                return label + ': ' + value + ' (' + percentage + ')';
+                                            }
                                         }
                                     }
+                                },
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true
                                 }
-                            },
-                            animation: {
-                                animateScale: true,
-                                animateRotate: true
                             }
-                        }
-                    };
+                        };
 
-                    new Chart(ctx, config);
-                });
-            </script>
+                        new Chart(ctx, config);
+                    });
+                </script>
             </div>
 
             <!-- Detailed Results -->

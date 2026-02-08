@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<header>
-    <div class="header-content">
+<header style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); position: relative; overflow: hidden;">
+    <!-- Abstract Background Pattern -->
+    <div
+        style="position: absolute; top: -50%; left: -20%; width: 80%; height: 200%; background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%); pointer-events: none;">
+    </div>
+    <div
+        style="position: absolute; bottom: -50%; right: -20%; width: 80%; height: 200%; background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, transparent 70%); pointer-events: none;">
+    </div>
+
+    <div class="header-content" style="position: relative; z-index: 10;">
         <div class="logo-container">
             <div class="logo-icon">
                 <i class="fas fa-shield-alt"></i>
@@ -51,7 +59,7 @@
 <main>
     <div class="content-grid">
         <div class="main-content">
-            <div class="card">
+            <div class="card" style="box-shadow: var(--shadow-lg); border: none;">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-search"></i>
@@ -62,15 +70,19 @@
                 <form id="analysisForm" method="POST" action="/analyze" enctype="multipart/form-data">
                     <input type="hidden" id="pastedImageData" name="image_data">
 
-                    <!-- Input Method Tabs -->
-                    <div class="input-tabs">
-                        <button type="button" class="tab-btn active" onclick="showTab('textTab')">
+                    <!-- Input Method Tabs (Segmented Control Style) -->
+                    <div class="input-tabs"
+                        style="background: #f1f5f9; padding: 6px; border-radius: 100px; border: none; display: flex; gap: 5px; margin-bottom: 30px;">
+                        <button type="button" class="tab-btn active" onclick="showTab('textTab')"
+                            style="border-radius: 50px; flex: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                             <i class="fas fa-edit"></i> Text Input
                         </button>
-                        <button type="button" class="tab-btn" onclick="showTab('uploadTab')">
+                        <button type="button" class="tab-btn" onclick="showTab('uploadTab')"
+                            style="border-radius: 50px; flex: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                             <i class="fas fa-upload"></i> Upload
                         </button>
-                        <button type="button" class="tab-btn" onclick="showTab('pasteTab')">
+                        <button type="button" class="tab-btn" onclick="showTab('pasteTab')"
+                            style="border-radius: 50px; flex: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                             <i class="fas fa-paste"></i> Paste Image
                         </button>
                     </div>
@@ -85,7 +97,8 @@
                             <div class="textarea-wrapper">
                                 <textarea id="ingredients" name="ingredients"
                                     placeholder="Example: Sodium Benzoate (Preservative), Natural Flavors, Aspartame (Artificial Sweetener), Vitamin C (Ascorbic Acid)..."
-                                    maxlength="2000"></textarea>
+                                    maxlength="2000"
+                                    style="border-radius: 16px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);"></textarea>
                                 <div class="char-count">0/2000</div>
                             </div>
                         </div>
@@ -95,20 +108,22 @@
                     <div id="uploadTab" class="tab-content">
                         <div class="form-group">
                             <label class="form-label">Upload Image of Ingredient Label</label>
-                            <div class="upload-area" id="uploadArea" onclick="document.getElementById('image').click()">
-                                <div class="upload-icon">
+                            <div class="upload-area" id="uploadArea" onclick="document.getElementById('image').click()"
+                                style="border: 2px dashed #cbd5e1; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); transition: all 0.3s ease;">
+                                <div class="upload-icon"
+                                    style="color: #64748b; transform: scale(1); transition: transform 0.3s ease;">
                                     <i class="fas fa-cloud-upload-alt"></i>
                                 </div>
                                 <div class="upload-text">
-                                    <h4>Drag & drop or click to upload</h4>
-                                    <p>Upload clear image of ingredient labels for OCR analysis</p>
-                                    <p><small>High-resolution images yield better results</small></p>
-                                    <div class="file-types">
-                                        <span class="file-type-badge">PNG</span>
-                                        <span class="file-type-badge">JPG</span>
-                                        <span class="file-type-badge">JPEG</span>
-                                        <span class="file-type-badge">GIF</span>
-                                        <span class="file-type-badge">WEBP</span>
+                                    <h4 style="font-weight: 700; color: var(--text-primary);">Drag & drop or click to
+                                        upload</h4>
+                                    <p style="color: var(--text-secondary);">Supports PNG, JPG, WEBP</p>
+                                    <div class="file-types" style="margin-top: 20px;">
+                                        <div style="display: inline-flex; gap: 8px;">
+                                            <span class="file-type-badge">PNG</span>
+                                            <span class="file-type-badge">JPG</span>
+                                            <span class="file-type-badge">WEBP</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -122,15 +137,16 @@
                     <div id="pasteTab" class="tab-content">
                         <div class="form-group">
                             <label class="form-label">Paste Image Directly</label>
-                            <div class="paste-area" id="pasteArea">
+                            <div class="paste-area" id="pasteArea"
+                                style="border: 2px dashed #cbd5e1; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
                                 <div class="paste-icon">
                                     <i class="fas fa-paste"></i>
                                 </div>
                                 <div class="upload-text">
-                                    <h4>Press Ctrl+V to paste an image</h4>
-                                    <p>Take a screenshot or copy an image from anywhere</p>
-                                    <p><small>Works with screenshots, copied images, etc.</small></p>
-                                    <div class="paste-hotkey">
+                                    <h4 style="font-weight: 700;">Press Ctrl+V to paste</h4>
+                                    <p>Works with screenshots and copied images</p>
+                                    <div class="paste-hotkey"
+                                        style="background: var(--primary-gradient); box-shadow: var(--shadow-md);">
                                         <i class="fas fa-keyboard"></i> Ctrl + V
                                     </div>
                                 </div>
