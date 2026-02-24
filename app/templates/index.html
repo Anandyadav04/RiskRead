@@ -1,0 +1,619 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); position: relative; overflow: hidden;">
+    <!-- Abstract Background Pattern -->
+    <div
+        style="position: absolute; top: -50%; left: -20%; width: 80%; height: 200%; background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%); pointer-events: none;">
+    </div>
+    <div
+        style="position: absolute; bottom: -50%; right: -20%; width: 80%; height: 200%; background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, transparent 70%); pointer-events: none;">
+    </div>
+
+    <div class="header-content" style="position: relative; z-index: 10;">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="logo-text">RiskRead</div>
+        </div>
+
+        <div class="tagline">
+            Advanced AI-powered analysis of food and cosmetic ingredients.
+            Get instant safety ratings, potential risks, and scientific insights
+            for smarter consumption decisions.
+        </div>
+
+        <div class="header-stats">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>2,500+</h3>
+                    <p>Ingredients Analyzed</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>AI-Powered</h3>
+                    <p>Machine Learning Models</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Instant</h3>
+                    <p>Real-time Analysis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="content-grid">
+        <div class="main-content">
+            <div class="card" style="box-shadow: var(--shadow-lg); border: none;">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h2 class="card-title">Ingredient Analysis</h2>
+                </div>
+
+                <form id="analysisForm" method="POST" action="/analyze" enctype="multipart/form-data">
+                    <input type="hidden" id="pastedImageData" name="image_data">
+
+                    <!-- Input Method Tabs (Segmented Control Style) -->
+                    <div class="input-tabs"
+                        style="background: #f1f5f9; padding: 6px; border-radius: 100px; border: none; display: flex; gap: 5px; margin-bottom: 30px;">
+                        <button type="button" class="tab-btn active" onclick="showTab('textTab')"
+                            style="border-radius: 50px; flex: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <i class="fas fa-edit"></i> Text Input
+                        </button>
+                        <button type="button" class="tab-btn" onclick="showTab('uploadTab')"
+                            style="border-radius: 50px; flex: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                        <button type="button" class="tab-btn" onclick="showTab('pasteTab')"
+                            style="border-radius: 50px; flex: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <i class="fas fa-paste"></i> Paste Image
+                        </button>
+                    </div>
+
+                    <!-- Text Input Tab -->
+                    <div id="textTab" class="tab-content active">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Enter Ingredients
+                                <span class="hint">(comma-separated or list format)</span>
+                            </label>
+                            <div class="textarea-wrapper">
+                                <textarea id="ingredients" name="ingredients"
+                                    placeholder="Example: Sodium Benzoate (Preservative), Natural Flavors, Aspartame (Artificial Sweetener), Vitamin C (Ascorbic Acid)..."
+                                    maxlength="2000"
+                                    style="border-radius: 16px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);"></textarea>
+                                <div class="char-count">0/2000</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Tab -->
+                    <div id="uploadTab" class="tab-content">
+                        <div class="form-group">
+                            <label class="form-label">Upload Image of Ingredient Label</label>
+                            <div class="upload-area" id="uploadArea" onclick="document.getElementById('image').click()"
+                                style="border: 2px dashed #cbd5e1; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); transition: all 0.3s ease;">
+                                <div class="upload-icon"
+                                    style="color: #64748b; transform: scale(1); transition: transform 0.3s ease;">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="upload-text">
+                                    <h4 style="font-weight: 700; color: var(--text-primary);">Drag & drop or click to
+                                        upload</h4>
+                                    <p style="color: var(--text-secondary);">Supports PNG, JPG, WEBP</p>
+                                    <div class="file-types" style="margin-top: 20px;">
+                                        <div style="display: inline-flex; gap: 8px;">
+                                            <span class="file-type-badge">PNG</span>
+                                            <span class="file-type-badge">JPG</span>
+                                            <span class="file-type-badge">WEBP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" id="image" name="image" accept="image/*" style="display: none;"
+                                onchange="previewImage(this, 'filePreview')">
+                            <div id="filePreview" style="margin-top: 20px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Paste Image Tab -->
+                    <div id="pasteTab" class="tab-content">
+                        <div class="form-group">
+                            <label class="form-label">Paste Image Directly</label>
+                            <div class="paste-area" id="pasteArea"
+                                style="border: 2px dashed #cbd5e1; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
+                                <div class="paste-icon">
+                                    <i class="fas fa-paste"></i>
+                                </div>
+                                <div class="upload-text">
+                                    <h4 style="font-weight: 700;">Press Ctrl+V to paste</h4>
+                                    <p>Works with screenshots and copied images</p>
+                                    <div class="paste-hotkey"
+                                        style="background: var(--primary-gradient); box-shadow: var(--shadow-md);">
+                                        <i class="fas fa-keyboard"></i> Ctrl + V
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pastePreview" style="margin-top: 20px;"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+                        <i class="fas fa-rocket"></i>
+                        <span id="submitText">Analyze Ingredients with AI</span>
+                        <span id="submitLoading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> Analyzing...
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h2 class="card-title">How RiskRead Works</h2>
+                </div>
+
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h3>Input Ingredients</h3>
+                        <p>Enter ingredients manually or upload images for automatic OCR text extraction and parsing.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI Processing</h3>
+                        <p>Advanced ML models cross-reference ingredients with databases of known substances and health
+                            impacts.</p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>Detailed Analysis</h3>
+                        <p>Receive comprehensive safety ratings, potential risks, and actionable insights for each
+                            ingredient.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="info-card">
+                <h3><i class="fas fa-lightbulb"></i> Why Use RiskRead?</h3>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <strong>Scientific Accuracy</strong>
+                            <p>Based on peer-reviewed research</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>
+                            <strong>Instant Results</strong>
+                            <p>Real-time analysis in seconds</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div>
+                            <strong>Historical Data</strong>
+                            <p>Track changes in safety ratings</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div>
+                            <strong>Expert Insights</strong>
+                            <p>Professional health context</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3><i class="fas fa-star"></i> Pro Tips</h3>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div>
+                            <strong>Clear Images</strong>
+                            <p>Use good lighting for OCR accuracy</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-list"></i>
+                        </div>
+                        <div>
+                            <strong>Complete Lists</strong>
+                            <p>Include all ingredients for best results</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                        <div>
+                            <strong>Detailed Analysis</strong>
+                            <p>Check individual ingredient reports</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="logo-text" style="font-size: 2rem; margin-bottom: 20px;">RiskRead</div>
+
+        <div class="footer-links">
+            <a href="#"><i class="fas fa-book"></i> Documentation</a>
+            <a href="#"><i class="fas fa-database"></i> Dataset</a>
+            <a href="#"><i class="fas fa-code"></i> API</a>
+            <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="#"><i class="fas fa-shield-alt"></i> Privacy</a>
+        </div>
+
+        <div class="disclaimer">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Disclaimer:</strong> RiskRead provides informational analysis based on available scientific data.
+            This tool is not a substitute for professional medical advice. Always consult healthcare professionals
+            for health-related decisions. Results may vary based on individual sensitivities and current research.
+        </div>
+
+        <p style="margin-top: 30px; font-size: 0.9rem; color: #64748b;">
+            © 2026 RiskRead AI. Mini-Project | Powered by foodvisor-nyu/labeled-food-ingredients dataset
+        </p>
+    </div>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Global variables
+    let currentTab = 'textTab';
+    let pastedImage = null;
+
+    // DOM Elements
+    const textarea = document.getElementById('ingredients');
+    const charCount = document.querySelector('.char-count');
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('image');
+    const pasteArea = document.getElementById('pasteArea');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function () {
+        showTab('textTab');
+        console.log('🎨 RiskRead AI Ready!');
+        console.log('📋 Press Ctrl+V to paste images directly');
+    });
+
+    // Character counter for textarea
+    textarea.addEventListener('input', function () {
+        const count = this.value.length;
+        charCount.textContent = `${count}/2000`;
+        if (count > 1800) charCount.style.color = '#f5576c';
+        else if (count > 1500) charCount.style.color = '#f6d365';
+        else charCount.style.color = '#64748b';
+    });
+
+    // UPLOAD TAB: Drag and drop functionality
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, () => uploadArea.classList.add('dragover'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('dragover'), false);
+    });
+
+    uploadArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        fileInput.files = files;
+        previewImage(fileInput, 'filePreview');
+    }
+
+    // Preview function for file uploads
+    function previewImage(input, previewId) {
+        const preview = document.getElementById(previewId);
+        preview.innerHTML = '';
+
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                // UI for preview
+                const html = `
+                    <div style="display: flex; align-items: center; gap: 20px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 2px solid #e2e8f0;">
+                        <img src="${e.target.result}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; box-shadow: var(--shadow-sm);">
+                        <div style="flex: 1;">
+                            <h4 style="margin-bottom: 10px; color: var(--text-primary);">${file.name}</h4>
+                            <p style="color: var(--text-secondary); margin-bottom: 5px;">Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                            <p style="color: var(--text-secondary);">Type: ${file.type}</p>
+                        </div>
+                        <button onclick="clearFileUpload()" style="background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                preview.innerHTML = html;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function clearFileUpload() {
+        document.getElementById('image').value = '';
+        document.getElementById('filePreview').innerHTML = '';
+    }
+
+    // Tab switching function
+    function showTab(tabId) {
+        // UI updates
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+
+        // Find button for this tab and activate it
+        const buttons = document.querySelectorAll('.tab-btn');
+        if (tabId === 'textTab') buttons[0].classList.add('active');
+        if (tabId === 'uploadTab') buttons[1].classList.add('active');
+        if (tabId === 'pasteTab') buttons[2].classList.add('active');
+
+        currentTab = tabId;
+
+        // Button text updates
+        const submitText = document.getElementById('submitText');
+        if (tabId === 'textTab') submitText.textContent = 'Analyze Text with AI';
+        else if (tabId === 'uploadTab') submitText.textContent = 'Upload & Analyze with AI';
+        else if (tabId === 'pasteTab') submitText.textContent = 'Analyze Pasted Image';
+
+        // CLEAR DATA FROM OTHER TABS
+        if (tabId !== 'uploadTab') clearFileUpload();
+        if (tabId !== 'pasteTab') clearPaste();
+    }
+
+    // PASTE TAB: Compression Function
+    function compressImage(file, callback) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (event) {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Max dimensions
+                const MAX_WIDTH = 1500;
+                const MAX_HEIGHT = 1500;
+                let width = img.width;
+                let height = img.height;
+
+                // Resize if needed
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compress to JPEG with 0.8 quality
+                const base64Data = canvas.toDataURL('image/jpeg', 0.8);
+
+                // Calculate size reduction
+                const originalSize = file.size / 1024;
+                const compressedSize = Math.round((base64Data.length * 3 / 4) / 1024);
+                console.log(`📉 Compressed: ${originalSize.toFixed(1)}KB -> ${compressedSize}KB`);
+
+                callback(base64Data);
+            };
+        };
+    }
+
+    // Global Paste Listener
+    document.addEventListener('paste', function (e) {
+        const items = e.clipboardData.items;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+                const blob = items[i].getAsFile();
+
+                // Auto-switch to paste tab
+                if (currentTab !== 'pasteTab') showTab('pasteTab');
+
+                console.log('📋 Processing pasted image...', blob.size);
+
+                // Compress and show preview
+                compressImage(blob, function (base64WithHeader) {
+                    // Remove header for storage
+                    const base64Data = base64WithHeader.split(',')[1];
+                    document.getElementById('pastedImageData').value = base64Data;
+
+                    // Show preview
+                    const pastePreview = document.getElementById('pastePreview');
+                    pastePreview.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 20px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 2px solid #e2e8f0;">
+                            <img src="${base64WithHeader}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; box-shadow: var(--shadow-sm);">
+                            <div style="flex: 1;">
+                                <h4 style="margin-bottom: 10px; color: var(--text-primary);">✅ Image Ready!</h4>
+                                <p style="color: var(--text-secondary); margin-bottom: 5px;">Optimized for analysis</p>
+                                <p style="color: #10b981; font-weight: bold;">Size OK</p>
+                            </div>
+                            <button onclick="clearPaste()" style="background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer;" title="Remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    pastedImage = true;
+                });
+                break;
+            }
+        }
+    });
+
+    // Paste Area Click/Drop Handlers
+    pasteArea.addEventListener('click', () => document.getElementById('image').click()); // Fallback to upload
+
+    pasteArea.addEventListener('dragover', (e) => { e.preventDefault(); pasteArea.classList.add('dragover'); });
+    pasteArea.addEventListener('dragleave', (e) => { e.preventDefault(); pasteArea.classList.remove('dragover'); });
+    pasteArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        pasteArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].type.indexOf('image') !== -1) {
+            // Treat drop on paste zone same as paste
+            const blob = files[0];
+            compressImage(blob, function (base64WithHeader) {
+                const base64Data = base64WithHeader.split(',')[1];
+                document.getElementById('pastedImageData').value = base64Data;
+                pastedImage = true;
+                // Reuse the same preview logic...
+                const pastePreview = document.getElementById('pastePreview');
+                pastePreview.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 20px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 2px solid #e2e8f0;">
+                            <img src="${base64WithHeader}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; box-shadow: var(--shadow-sm);">
+                            <div style="flex: 1;">
+                                <h4 style="margin-bottom: 10px; color: var(--text-primary);">✅ Image Ready!</h4>
+                                <p style="color: var(--text-secondary); margin-bottom: 5px;">Optimized for analysis</p>
+                                <p style="color: #10b981; font-weight: bold;">Size OK</p>
+                            </div>
+                            <button onclick="clearPaste()" style="background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer;" title="Remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+            });
+        }
+    });
+
+    function clearPaste() {
+        pastedImage = null;
+        document.getElementById('pastePreview').innerHTML = '';
+        document.getElementById('pastedImageData').value = '';
+    }
+
+    // FORM SUBMISSION HANDLER
+    document.getElementById('analysisForm').addEventListener('submit', function (e) {
+        const ingredients = document.getElementById('ingredients');
+        const imageInput = document.getElementById('image');
+        const pastedInput = document.getElementById('pastedImageData');
+
+        console.log('🚀 Submitting form for tab:', currentTab);
+
+        // Validation & Disable Unused
+        if (currentTab === 'textTab') {
+            imageInput.disabled = true;
+            pastedInput.disabled = true;
+            if (!ingredients.value.trim()) {
+                e.preventDefault();
+                alert('📝 Please enter ingredients text.');
+                return;
+            }
+        }
+        else if (currentTab === 'uploadTab') {
+            ingredients.disabled = true;
+            pastedInput.disabled = true;
+            if (!imageInput.files[0]) {
+                e.preventDefault();
+                alert('📁 Please upload an image.');
+                return;
+            }
+        }
+        else if (currentTab === 'pasteTab') {
+            ingredients.disabled = true;
+            imageInput.disabled = true;
+            if (!pastedInput.value) {
+                e.preventDefault();
+                alert('📋 Please paste an image first.');
+                return;
+            }
+        }
+
+        // Show loading
+        const submitBtn = document.getElementById('submitBtn');
+        const submitText = document.getElementById('submitText');
+        const submitLoading = document.getElementById('submitLoading');
+
+        submitBtn.disabled = true;
+        submitText.style.display = 'none';
+        submitLoading.style.display = 'inline';
+        submitLoading.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+
+        // Timeout reset
+        setTimeout(() => {
+            submitBtn.disabled = false;
+            submitText.style.display = 'inline';
+            submitLoading.style.display = 'none';
+            // Re-enable inputs
+            ingredients.disabled = false;
+            imageInput.disabled = false;
+            pastedInput.disabled = false;
+        }, 20000);
+    });
+</script>
+{% endblock %}

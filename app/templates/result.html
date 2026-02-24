@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+    <div class="header-content" style="padding-bottom: 20px;">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="logo-text">Analysis Report</div>
+        </div>
+        <div class="tagline">
+            Here's the safety breakdown of your ingredients based on scientific data.
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="content-grid">
+        <div class="main-content">
+            <a href="/" class="btn"
+                style="margin-bottom: 20px; background: white; color: var(--text-primary); box-shadow: var(--shadow-sm);">
+                <i class="fas fa-arrow-left"></i> Analyze Another Label
+            </a>
+
+            <!-- Summary Stats -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h2 class="card-title">Overview</h2>
+                </div>
+
+                <div class="stats-container"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                    <!-- Chart Side -->
+                    <div class="chart-wrapper"
+                        style="position: relative; height: 250px; width: 100%; display: flex; justify-content: center;">
+                        <canvas id="safetyChart" data-safe="{{ stats.safe | default(0) }}"
+                            data-controversial="{{ stats.controversial | default(0) }}"
+                            data-harmful="{{ stats.harmful | default(0) }}">
+                        </canvas>
+                        <!-- Center Text Overlay -->
+                        <div
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                            <div style="font-size: 2.5rem; font-weight: 800; color: var(--text-primary);">
+                                {{ stats.total | default(0) }}
+                            </div>
+                            <div
+                                style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">
+                                Total</div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Side -->
+                    <div class="stats-grid" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                        <div class="stat-row"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f0fff4; border-radius: 10px; border-left: 5px solid #48bb78;">
+                            <div>
+                                <div style="font-weight: 700; color: #22543d;">Approved / Safe</div>
+                                <div style="font-size: 0.85rem; color: #48bb78;">Risk Free</div>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #22543d;">
+                                {{ stats.safe | default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="stat-row"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fffaf0; border-radius: 10px; border-left: 5px solid #d69e2e;">
+                            <div>
+                                <div style="font-weight: 700; color: #744210;">Controversial</div>
+                                <div style="font-size: 0.85rem; color: #d69e2e;">Moderate Caution</div>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #744210;">
+                                {{ stats.controversial | default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="stat-row"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff5f5; border-radius: 10px; border-left: 5px solid #f56565;">
+                            <div>
+                                <div style="font-weight: 700; color: #742a2a;">Potential Risks</div>
+                                <div style="font-size: 0.85rem; color: #f56565;">Avoid if possible</div>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #742a2a;">
+                                {{ stats.harmful | default(0) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Chart.js -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const canvas = document.getElementById('safetyChart');
+                        const ctx = canvas.getContext('2d');
+
+                        // Read values from data attributes
+                        const safeCount = parseInt(canvas.dataset.safe) || 0;
+                        const controversialCount = parseInt(canvas.dataset.controversial) || 0;
+                        const harmfulCount = parseInt(canvas.dataset.harmful) || 0;
+
+                        const data = {
+                            labels: ['Safe', 'Controversial', 'Harmful'],
+                            datasets: [{
+                                data: [safeCount, controversialCount, harmfulCount],
+                                backgroundColor: [
+                                    '#48bb78', // Green for Safe
+                                    '#ecc94b', // Yellow for Controversial
+                                    '#f56565'  // Red for Harmful
+                                ],
+                                borderWidth: 0,
+                                hoverOffset: 4
+                            }]
+                        };
+
+                        const config = {
+                            type: 'doughnut',
+                            data: data,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutout: '75%',
+                                plugins: {
+                                    legend: {
+                                        display: false // Hide default legend as we have custom stats
+                                    },
+                                    tooltip: {
+                                        enabled: true,
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        padding: 12,
+                                        cornerRadius: 8,
+                                        callbacks: {
+                                            label: function (context) {
+                                                const label = context.label || '';
+                                                const value = context.raw || 0;
+                                                const total = context.chart._metasets[context.datasetIndex].total;
+                                                const percentage = Math.round((value / total) * 100) + '%';
+                                                return label + ': ' + value + ' (' + percentage + ')';
+                                            }
+                                        }
+                                    }
+                                },
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true
+                                }
+                            }
+                        };
+
+                        new Chart(ctx, config);
+                    });
+                </script>
+            </div>
+
+            <!-- Detailed Results -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-list-ul"></i>
+                    </div>
+                    <h2 class="card-title">Detailed Breakdown</h2>
+                </div>
+
+                <ul class="ingredient-list">
+                    {% for prediction in predictions %}
+                    {% set css_class = prediction.label|lower|replace(' ', '-') %}
+                    <li class="ingredient-item {{ css_class }}">
+                        <div style="flex-grow: 1;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                <h3 style="font-size: 1.1rem; margin: 0;">{{ prediction.ingredient }}</h3>
+                                {% if css_class == 'harmful' %}
+                                <i class="fas fa-exclamation-circle" style="color: #f56565;" title="Harmful"></i>
+                                {% elif css_class == 'controversial' %}
+                                <i class="fas fa-exclamation-triangle" style="color: #ecc94b;"
+                                    title="Controversial"></i>
+                                {% else %}
+                                <i class="fas fa-check-circle" style="color: #48bb78;" title="Safe"></i>
+                                {% endif %}
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;">{{
+                                prediction.explanation }}</p>
+                        </div>
+                        <span class="status-badge badge-{{ css_class }}">
+                            {{ prediction.label }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if source_type == "image" %}
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h2 class="card-title">Extracted Text (OCR)</h2>
+                </div>
+                <div
+                    style="background: #f8fafc; padding: 20px; border-radius: 12px; font-family: 'Consolas', 'Monaco', monospace; border: 1px solid var(--border-color); color: var(--text-secondary); max-height: 300px; overflow-y: auto;">
+                    {{ original_text }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="sidebar">
+            <div class="info-card">
+                <h3><i class="fas fa-info-circle"></i> Understanding Levels</h3>
+                <ul class="feature-list">
+                    <li class="feature-item" style="align-items: flex-start;">
+                        <div class="feature-icon" style="background: #48bb78;">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <strong>Safe / Not Harmful</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">Generally recognized as safe
+                                (GRAS) by food safety authorities.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item" style="align-items: flex-start;">
+                        <div class="feature-icon" style="background: #f6e05e;">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        <div>
+                            <strong>Controversial</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">Mixed scientific studies or
+                                potential concerns in large quantities.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item" style="align-items: flex-start;">
+                        <div class="feature-icon" style="background: #f56565;">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div>
+                            <strong>Potentially Harmful</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">Linked to adverse health effects
+                                or restricted in some regions.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3><i class="fas fa-flask"></i> Analysis Info</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                    This analysis uses a machine learning model trained on over 2,500 common ingredients.
+                </p>
+                <div style="padding: 15px; background: #e0f2fe; border-radius: 8px; border: 1px solid #bae6fd;">
+                    <strong style="color: #0369a1;"><i class="fas fa-shield-alt"></i> Disclaimer</strong>
+                    <p style="font-size: 0.85rem; color: #0c4a6e; margin-top: 5px;">
+                        For informational purposes only. Results may vary. Consult a professional for medical advice.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <p style="color: #94a3b8;">
+            © 2026 RiskRead AI. Mini-Project
+        </p>
+    </div>
+</footer>
+{% endblock %}
