@@ -198,41 +198,43 @@ def analyze():
             except Exception as e:
                 print(f"  ⚠️ Post-processor failed: {e}, using raw ingredients")
         
+        gibberish_detected = False
         if not ingredients:
             print("  ⚠️ WARNING: No ingredients extracted!")
-            
             # Check if it was rejected as gibberish (i.e., we had text but got 0 ingredients)
             if source_type == "image" and extracted_text and len(extracted_text) > 10:
-                 # If the extractor rejected it (returned []), it likely detected gibberish.
-                 # Trust the extractor and DO NOT try emergency extraction.
-                 print("  🛑 Skipping emergency extraction (likely gibberish).")
+                # If the extractor rejected it (returned []), it likely detected gibberish.
+                print("  🛑 Skipping emergency extraction (likely gibberish).")
+                gibberish_detected = True
             else:
                 # Only try emergency extraction for TEXT input or if OCR gave something vaguely plausible but we failed to parse it
                 print("  Trying emergency extraction...")
                 emergency_ingredients = []
-                # Simple split by comma
                 for part in extracted_text.split(','):
                     part = part.strip()
                     if part and len(part) > 3:
-                        # Remove common prefixes
                         for prefix in ['made of:', 'contains:', 'ingredients:', 'less than']:
                             if part.lower().startswith(prefix):
                                 part = part[len(prefix):].strip()
-                        
-                        # Basic gibberish check for emergency parts
                         if len(part) < 20 and len(re.findall(r'[aeiou]', part.lower())) == 0:
-                             continue # Skip parts with no vowels
-                             
+                            continue # Skip parts with no vowels
                         if part:
                             emergency_ingredients.append(part)
-                
                 if emergency_ingredients:
                     ingredients = emergency_ingredients
                     print(f"  ✅ Emergency extraction found: {ingredients}")
 
         if not ingredients:
-             flash("❌ No valid ingredients found. The image quality might be too low or the text is unreadable.", "error")
-             return render_template('index.html')
+            if gibberish_detected:
+                return render_template('result.html',
+                                      predictions=None,
+                                      stats=None,
+                                      source_type=source_type,
+                                      original_text=extracted_text[:500],
+                                      gibberish_detected=True)
+            else:
+                flash("❌ No valid ingredients found. The image quality might be too low or the text is unreadable.", "error")
+                return render_template('index.html')
         
         # ===== MAKE PREDICTIONS =====
         print(f"\n🤖 DEBUG: Making predictions...")
@@ -261,10 +263,11 @@ def analyze():
         print("="*60 + "\n")
         
         return render_template('result.html', 
-                             predictions=predictions,
-                             stats=stats,
-                             source_type=source_type,
-                             original_text=extracted_text[:500])
+                     predictions=predictions,
+                     stats=stats,
+                     source_type=source_type,
+                     original_text=extracted_text[:500],
+                     gibberish_detected=False)
         
     except Exception as e:
         print(f"\n❌ ERROR in /analyze: {str(e)}")

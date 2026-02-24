@@ -23,7 +23,85 @@
                 <i class="fas fa-arrow-left"></i> Analyze Another Label
             </a>
 
-            <!-- Summary Stats -->
+            <!-- OCR Quality Warning - Show prominently if OCR failed or produced gibberish -->
+            {% if source_type == "image" and (gibberish_detected or (ocr_confidence is defined and ocr_confidence < 30) or (original_text and 'No text detected' in original_text)) %}
+            <div class="card" style="border-left: 5px solid #f59e0b; background: #fffbeb; margin-bottom: 20px;">
+                <div style="display: flex; gap: 20px; align-items: flex-start; padding: 10px;">
+                    <div style="font-size: 2.5rem; color: #f59e0b;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="color: #92400e; margin: 0 0 10px 0; font-size: 1.3rem;">
+                            📸 Image Quality Issue Detected
+                        </h3>
+                        
+                        {% if ocr_confidence is defined and ocr_confidence < 20 %}
+                        <p style="color: #92400e; margin: 0 0 15px 0; font-size: 1.1rem;">
+                            <strong>The text in your image was too unclear to read properly</strong> (Confidence: {{ ocr_confidence|round(1) }}%).
+                        </p>
+                        {% elif gibberish_detected %}
+                        <p style="color: #92400e; margin: 0 0 15px 0; font-size: 1.1rem;">
+                            <strong>The text extracted from your image appears to be unreadable or garbled.</strong>
+                        </p>
+                        {% else %}
+                        <p style="color: #92400e; margin: 0 0 15px 0; font-size: 1.1rem;">
+                            <strong>OCR could not extract any readable text from your image.</strong>
+                        </p>
+                        {% endif %}
+                        
+                        <!-- Helpful Tips -->
+                        <div style="background: white; border-radius: 12px; padding: 20px; margin-top: 15px;">
+                            <h4 style="color: #92400e; margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-lightbulb"></i> Tips for better results:
+                            </h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="background: #f59e0b; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                                    <span>Use better lighting</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="background: #f59e0b; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
+                                    <span>Hold camera steady to avoid blur</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="background: #f59e0b; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+                                    <span>Ensure text is in focus</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="background: #f59e0b; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">4</div>
+                                    <span>Avoid glare and shadows</span>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+                                <a href="/" class="btn" style="background: #f59e0b; color: white; border: none;">
+                                    <i class="fas fa-camera"></i> Try Another Image
+                                </a>
+                                <a href="/manual-entry" class="btn" style="background: white; color: #4b5563; border: 1px solid #d1d5db;">
+                                    <i class="fas fa-keyboard"></i> Enter Ingredients Manually
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Show what OCR actually saw (for debugging/transparency) -->
+                        {% if original_text and original_text.strip() and 'No text detected' not in original_text %}
+                        <div style="margin-top: 15px; padding: 15px; background: #fef3c7; border-radius: 8px; font-family: monospace; font-size: 0.9rem; border: 1px solid #fcd34d;">
+                            <strong style="color: #92400e;">What the system read:</strong><br>
+                            <span style="color: #78350f;">{{ original_text }}</span>
+                            {% if ocr_confidence is defined %}
+                            <div style="margin-top: 8px; color: #92400e; font-size: 0.85rem;">
+                                Recognition confidence: {{ ocr_confidence|round(1) }}%
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Summary Stats (Only show if we have ingredients) -->
+            {% if predictions and predictions|length > 0 %}
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon">
@@ -95,62 +173,64 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         const canvas = document.getElementById('safetyChart');
-                        const ctx = canvas.getContext('2d');
+                        if (canvas) {
+                            const ctx = canvas.getContext('2d');
 
-                        // Read values from data attributes
-                        const safeCount = parseInt(canvas.dataset.safe) || 0;
-                        const controversialCount = parseInt(canvas.dataset.controversial) || 0;
-                        const harmfulCount = parseInt(canvas.dataset.harmful) || 0;
+                            // Read values from data attributes
+                            const safeCount = parseInt(canvas.dataset.safe) || 0;
+                            const controversialCount = parseInt(canvas.dataset.controversial) || 0;
+                            const harmfulCount = parseInt(canvas.dataset.harmful) || 0;
 
-                        const data = {
-                            labels: ['Safe', 'Controversial', 'Harmful'],
-                            datasets: [{
-                                data: [safeCount, controversialCount, harmfulCount],
-                                backgroundColor: [
-                                    '#48bb78', // Green for Safe
-                                    '#ecc94b', // Yellow for Controversial
-                                    '#f56565'  // Red for Harmful
-                                ],
-                                borderWidth: 0,
-                                hoverOffset: 4
-                            }]
-                        };
+                            const data = {
+                                labels: ['Safe', 'Controversial', 'Harmful'],
+                                datasets: [{
+                                    data: [safeCount, controversialCount, harmfulCount],
+                                    backgroundColor: [
+                                        '#48bb78', // Green for Safe
+                                        '#ecc94b', // Yellow for Controversial
+                                        '#f56565'  // Red for Harmful
+                                    ],
+                                    borderWidth: 0,
+                                    hoverOffset: 4
+                                }]
+                            };
 
-                        const config = {
-                            type: 'doughnut',
-                            data: data,
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                cutout: '75%',
-                                plugins: {
-                                    legend: {
-                                        display: false // Hide default legend as we have custom stats
-                                    },
-                                    tooltip: {
-                                        enabled: true,
-                                        backgroundColor: 'rgba(0,0,0,0.8)',
-                                        padding: 12,
-                                        cornerRadius: 8,
-                                        callbacks: {
-                                            label: function (context) {
-                                                const label = context.label || '';
-                                                const value = context.raw || 0;
-                                                const total = context.chart._metasets[context.datasetIndex].total;
-                                                const percentage = Math.round((value / total) * 100) + '%';
-                                                return label + ': ' + value + ' (' + percentage + ')';
+                            const config = {
+                                type: 'doughnut',
+                                data: data,
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    cutout: '75%',
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        },
+                                        tooltip: {
+                                            enabled: true,
+                                            backgroundColor: 'rgba(0,0,0,0.8)',
+                                            padding: 12,
+                                            cornerRadius: 8,
+                                            callbacks: {
+                                                label: function (context) {
+                                                    const label = context.label || '';
+                                                    const value = context.raw || 0;
+                                                    const total = context.chart._metasets[context.datasetIndex].total;
+                                                    const percentage = Math.round((value / total) * 100) + '%';
+                                                    return label + ': ' + value + ' (' + percentage + ')';
+                                                }
                                             }
                                         }
+                                    },
+                                    animation: {
+                                        animateScale: true,
+                                        animateRotate: true
                                     }
-                                },
-                                animation: {
-                                    animateScale: true,
-                                    animateRotate: true
                                 }
-                            }
-                        };
+                            };
 
-                        new Chart(ctx, config);
+                            new Chart(ctx, config);
+                        }
                     });
                 </script>
             </div>
@@ -190,14 +270,46 @@
                     {% endfor %}
                 </ul>
             </div>
+            {% endif %}
 
-            {% if source_type == "image" %}
+            <!-- Show message when no ingredients were found -->
+            {% if not predictions or predictions|length == 0 %}
+            <div class="card" style="text-align: center; padding: 40px;">
+                <div style="font-size: 4rem; color: #94a3b8; margin-bottom: 20px;">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 style="color: #1e293b; margin-bottom: 15px;">No Ingredients Found</h3>
+                <p style="color: #64748b; font-size: 1.1rem; max-width: 400px; margin: 0 auto 25px;">
+                    {% if source_type == "image" and (gibberish_detected or ocr_confidence < 30) %}
+                        We couldn't read the ingredients from your image. Try uploading a clearer photo or enter them manually.
+                    {% else %}
+                        No ingredients could be extracted from the provided text. Please check your input and try again.
+                    {% endif %}
+                </p>
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <a href="/" class="btn" style="background: #3b82f6; color: white; border: none;">
+                        <i class="fas fa-upload"></i> Try Another Image
+                    </a>
+                    <a href="/manual-entry" class="btn" style="background: white; color: #4b5563; border: 1px solid #d1d5db;">
+                        <i class="fas fa-pencil-alt"></i> Enter Manually
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- OCR Debug/Info Section (Only show if image was uploaded) -->
+            {% if source_type == "image" and original_text and original_text.strip() and not gibberish_detected and ocr_confidence and ocr_confidence >= 30 %}
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-file-alt"></i>
                     </div>
                     <h2 class="card-title">Extracted Text (OCR)</h2>
+                    {% if ocr_confidence %}
+                    <span style="margin-left: 15px; font-size: 0.85rem; color: #64748b;">
+                        Confidence: {{ ocr_confidence|round(1) }}%
+                    </span>
+                    {% endif %}
                 </div>
                 <div
                     style="background: #f8fafc; padding: 20px; border-radius: 12px; font-family: 'Consolas', 'Monaco', monospace; border: 1px solid var(--border-color); color: var(--text-secondary); max-height: 300px; overflow-y: auto;">
@@ -243,6 +355,31 @@
                     </li>
                 </ul>
             </div>
+
+            <!-- Photo Tips Card (Always show for image sources) -->
+            {% if source_type == "image" %}
+            <div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <h3 style="color: white;"><i class="fas fa-camera-retro"></i> Perfect Photo Tips</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-sun"></i>
+                        <span>Use natural lighting</span>
+                    </li>
+                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-hand-paper"></i>
+                        <span>Hold the camera steady</span>
+                    </li>
+                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Get close to the text</span>
+                    </li>
+                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-ban"></i>
+                        <span>Avoid shadows and glare</span>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
 
             <div class="info-card">
                 <h3><i class="fas fa-flask"></i> Analysis Info</h3>
